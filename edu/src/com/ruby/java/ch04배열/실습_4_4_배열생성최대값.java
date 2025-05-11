@@ -28,10 +28,18 @@ public class 실습_4_4_배열생성최대값 {
 		int max = 0;
 		
 		// for문 돌려서 랜덤 숫자를 배열의 요소로 저장과 출력!!
-		System.out.print("[ ");
+		int stepNum = 0; // 단계 수 저장할 변수 선언
+		
+		System.out.print("[");
 		for(int i=0; i<price.length; i++) {
+			stepNum++;
 			price[i] = rd.nextInt(100);
-			System.out.print(price[i] + " ");
+			if (stepNum == price.length)
+				System.out.print(price[i]);
+			else
+				System.out.print(price[i] + ",");
+			
+			// 최대값 최소값 할당
 			if (min > price[i]) min = price[i];
 			if (max < price[i]) max = price[i];
 		}

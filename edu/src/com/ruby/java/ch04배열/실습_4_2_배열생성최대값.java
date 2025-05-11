@@ -21,15 +21,21 @@ public class 실습_4_2_배열생성최대값 {
 		// 최대값 찾아서 출력
 		int priceMax = 0;
 		int[] price = {49, 93, 87, 67, 73};
+		int stepNum = 0;
+		
 		for (int i = 0; i < price.length; i++) {
 			if (priceMax < price[i]) priceMax = price[i];
 		}
 		System.out.println("최대값: " + priceMax);
 		
 		// 배열 형태 출력
-		System.out.print("[ ");
+		System.out.print("[");
 		for(int x : price) {
-			System.out.print(x + " ");
+			stepNum++;
+			if (stepNum == price.length)
+				System.out.print(x);
+			else
+				System.out.print(x + ", ");
 		}
 		System.out.println("]");
     }
