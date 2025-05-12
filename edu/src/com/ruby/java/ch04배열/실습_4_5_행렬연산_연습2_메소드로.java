@@ -36,7 +36,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 		
     	// 8. A와 E가 같은지 비교
 		System.out.println("===============================");
-		System.out.println("is A and B is a Same Matrics?");
+		System.out.println("is A and B are Same Matrics?");
 		System.out.println(isMatricsEquel(A,E));
 		System.out.println("===============================");
 		
@@ -101,6 +101,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 		
 		// 행렬의 곱셈 공식
 		// E[i][j] = A[i][0]*D[0][j] + A[i][1]*D[1][j] + ... + A[i][4]*D[4][j]
+		// E[i][j] = A[i][0]*D[0][j] + A[i][1]*D[1][j] + ... + A[i][k]*D[k][j]
 		for (int i = 0; i < ar; i++) {
 			for (int j = 0; j < bc; j++) {
 				for (int k = 0; k < ac; k++) {
@@ -136,7 +137,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 		
 		// 크기가 같은 지 비교, 행의 개수가 같으면 각 행 별 열의 개수 비교
 		if (ar == br) {
-			for (int i = 0; i < ar; i++) { // 예외 고민: 비선형구조(?)도 생각
+			for (int i = 0; i < ar; i++) {
 				isSameSize = A[i].length == B[i].length;
 			}
 		}
@@ -171,7 +172,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 			}
 			
 			// 요소 출력
-			for (int j = 0; j < c; j++) { // 예외 고민: 비선형구조(?)도 생각
+			for (int j = 0; j < c; j++) {
 				if (j == 0)
 					System.out.print("|" + arr[i][j] + "\t| ");
 				else
