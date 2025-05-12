@@ -14,8 +14,6 @@ import java.util.Random;
  *   최대값 = **
  *   최소값, 평균값 출력은 최대값 출력과 같다.
  *   
-
-
  */
 public class 실습_4_4_배열생성최대값 {
 	

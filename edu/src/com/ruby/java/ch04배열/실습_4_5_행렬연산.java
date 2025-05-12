@@ -78,15 +78,17 @@ public class 실습_4_5_행렬연산 {
     	Random rd = new Random();
     	
     	
-    	// for 확장문으로 했을 때, 원하는 결과가 안나옴 => 디버깅해보자!
-    	for (int[] x : A) {
-    		for (int y : x) {
-    			y = rd.nextInt(100);
-    			//System.out.print(y + ", "); // 랜덤한 y값은 잘 나옴
-    		}
+    	// for 확장문으로 했을 때 => 매우 안좋은 코드!! 굳이 사용하지 않아도 될 for확장문을 사용한 것!
+    	for (int[] x : A) { // 0 ~ 2 횟수만큼 반복, int[] x는 A의 요소!!
+    		int step = 0;
+    		for (int y : x) { // 0 ~ 4 횟수만큼 반복, y는 인덱스가 아니다! y는 요소였음!!
+    			step++; // 값 1 ~ 5
+    			x[step - 1] = rd.nextInt(100);
+    		} 
     	}
-    	//System.out.println();
-    	//System.out.println(Arrays.deepToString(A)); // [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+    	System.out.println();
+    	System.out.println("for 확장문으로 A: ");
+    	System.out.println(Arrays.deepToString(A));
     	
     	
     	
@@ -100,9 +102,33 @@ public class 실습_4_5_행렬연산 {
     	}
     	
     	System.out.println();
-    	System.out.println("A: " + Arrays.deepToString(A));
-    	System.out.println("B: " + Arrays.deepToString(B));
-    	System.out.println("C = A + B => " + Arrays.deepToString(C));
+    	
+    	// A출력
+    	System.out.println("A:");
+    	System.out.print("[");
+    	for (int i = 0; i < A.length; i++) {
+    		System.out.print("[");
+    		for(int j = 0; j < A[i].length; j++) {
+    			if (j == A[i].length - 1)
+    				System.out.print(A[i][j]);
+    			else
+    				System.out.print(A[i][j] + ", ");
+    		}
+    		System.out.print("]");
+    	}
+    	System.out.println("]");
+    	System.out.println();
+    	
+    	// B 출력
+    	System.out.println("B: ");
+    	System.out.println(Arrays.deepToString(B));
+    	System.out.println();
+    	
+    	// C 출력
+    	System.out.println("C = A + B => ");
+    	System.out.println(Arrays.deepToString(C));
+    	System.out.println();
+    	
     	
     	
     	/* 
@@ -137,7 +163,9 @@ public class 실습_4_5_행렬연산 {
     			D[i][j] = rd.nextInt(100);
     		}
     	}
-    	System.out.println("D: " + Arrays.deepToString(D));
+    	System.out.println("D: ");
+    	System.out.println(Arrays.deepToString(D));
+    	System.out.println();
     	
     	// 3*4 반복문: E에 요소 할당
     	for (int i = 0; i < ar; i++) { // A의 행을 순회: 0 ~ 2
@@ -153,7 +181,9 @@ public class 실습_4_5_행렬연산 {
     			E[i][j] = value;
     		}
     	}
-    	System.out.println("E = A * D => " + Arrays.deepToString(E));
+    	System.out.println("E = A * D => ");
+    	System.out.println(Arrays.deepToString(E));
+    	System.out.println();
     	
     	
     	
@@ -164,7 +194,9 @@ public class 실습_4_5_행렬연산 {
     			F[j][i] = D[i][j];
     		}
     	}
-    	System.out.println("F = D의 전치행렬: " + Arrays.deepToString(F));
+    	System.out.println("F = D의 전치행렬: ");
+    	System.out.println(Arrays.deepToString(F));
+    	System.out.println();
     	
     	
     	
@@ -183,7 +215,9 @@ public class 실습_4_5_행렬연산 {
     			F2[i][j] = D[i][j];
     		}
     	}
-    	System.out.println("F2: " + Arrays.deepToString(F2));
+    	System.out.println("F2: ");
+    	System.out.println(Arrays.deepToString(F2));
+    	System.out.println();
     	
     	//배열 G에 요소 할당
     	for (int i = 0; i < ar; i++) { // 0 ~ 2
@@ -195,13 +229,16 @@ public class 실습_4_5_행렬연산 {
     			G[i][j] = value;
     		}
     	}
-    	System.out.println("G: " + Arrays.deepToString(G));
+    	System.out.println("G: ");
+    	System.out.println(Arrays.deepToString(G));
+    	System.out.println();
     	
     	
     	
     	
     	// ================= [ E와 G가 같은지 비교 ] ================= //
-    	System.out.println("E와 G는 같은 행렬인가? " + Arrays.deepEquals(E, G));
+    	System.out.println("E와 G는 같은 행렬인가? ");
+    	System.out.println(Arrays.deepEquals(E, G));
     	System.out.println();
     	
     	
@@ -213,7 +250,7 @@ public class 실습_4_5_행렬연산 {
     	// 테이블의 제일 위 테두리
     	for (int i = 0; i < ac; i++) {// 열의 개수만큼 찍기
     		if (i == (ac - 1))
-    			System.out.print("〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
+    			System.out.print("〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
     		else
     			System.out.print("〓〓〓〓〓〓〓〓〓〓〓");
     	}
@@ -241,7 +278,7 @@ public class 실습_4_5_행렬연산 {
     	// 테이블의 제일 아래 테두리
     	for (int i = 0; i < ac; i++) {// 열의 개수만큼 찍기
     		if (i == (ac - 1))
-    			System.out.print("〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
+    			System.out.print("〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
     		else
     			System.out.print("〓〓〓〓〓〓〓〓〓〓〓");
     	}
