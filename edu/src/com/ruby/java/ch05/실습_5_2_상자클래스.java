@@ -1,5 +1,7 @@
 package com.ruby.java.ch05;
 
+import java.util.Objects;
+
 //import javax.swing.Box;
 
 class Box {
@@ -36,6 +38,8 @@ class Box {
     void resize(double scale) {
         //박스의 가로,세로,높이를 scale 비율로 변경
     	this.width *= scale;
+    	this.height *= scale;
+    	this.depth *= scale;
     }
     
     void show() {
@@ -67,7 +71,7 @@ public class 실습_5_2_상자클래스 {
         Box box2 = new Box(4, 7, 3);
         System.out.println(box2);
         //box2.show();
-     // 박스 크기 변경
+        // 박스 크기 변경
         box2.resize(9, 3, 8);
         System.out.println(box2);
         //box2.show();

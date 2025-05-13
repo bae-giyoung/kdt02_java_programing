@@ -1,7 +1,7 @@
 package com.ruby.java.ch05;
 
 public class 실습_5_3_배열필드 {
-	class Person {
+	static class Person {
 	    // 필드 (private)
 		/*
 		 * name은 String, age는 int, weight는 float로 필드들을 private 선언
@@ -10,17 +10,61 @@ public class 실습_5_3_배열필드 {
 	     * count 필드를 사용하여 수강 과목 증가시마다 ++count
 		 */
 	    // 필드
-
+		private String name;
+		private int age;
+		private float weight;
+		private String[] subjects;
+		private int[] years;
+		int count;
+		
 	    // 메소드
 	    void show() {
 	        // 기본 정보 출력::name=**, age=**, weight=**로 출력
+	    	System.out.println("name=" + name + ", age=" + age + ", weight=" + weight);
 	       
 	        // 교육과목 및 수강 연도 출력
 	    	/*
 	    	 * while 문을 사용하여 교육과목과 수강연도를 출력
 	    	 */
+	    	System.out.print("교육과목(수강연도): ");
+	    	while (count < subjects.length) {
+	    		if (count == subjects.length - 1)
+	    			System.out.println(subjects[count] + "(" + years[count] + ")");
+	    		else
+	    			System.out.print(subjects[count] + "(" + years[count] + "), ");
+	    		count++;
+	    	}
 	    }
-	    void addSubjectYear(String subject, int year);//과목, 수강연도를 매개변수로 전달받아 배열에 추가
+	    
+	    public void setName(String name) {
+	    	this.name = name;
+	    	
+	    }
+	    
+	    public void setAge(int age) {
+	    	this.age = age;
+	    }
+	    
+	    public void setWeight(float weight) {
+	    	this.weight = weight;
+	    }
+	    
+	    public void setSubjects (String[] subjects) {
+	    	this.subjects = subjects;
+	    }
+	    
+	    public void setYears (int[] years) {
+	    	this.years = years;
+	    }
+	    
+	    //과목, 수강연도를 매개변수로 전달받아 배열에 추가
+		public void addSubjectYear(String subject, int year) {
+			
+		};
+	}
+	
+	public static void main(String[] args) {
+		Main.main(args);
 	}
 
 	public class Main {
@@ -36,6 +80,7 @@ public class 실습_5_3_배열필드 {
 
 	        // 메소드 호출
 	        p1.show();
+	        System.out.println();
 	        
 	        // 두 번째 객체 생성 및 초기화
 	        Person p2 = new Person();
@@ -48,4 +93,10 @@ public class 실습_5_3_배열필드 {
 	        // 메소드 호출
 	        p2.show();
 	    }
+
+		public static Main main(String string, String string2) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	}
 }

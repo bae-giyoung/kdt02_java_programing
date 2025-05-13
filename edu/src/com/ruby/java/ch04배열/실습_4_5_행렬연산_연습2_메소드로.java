@@ -1,6 +1,5 @@
 package com.ruby.java.ch04배열;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class 실습_4_5_행렬연산_연습2_메소드로 {
