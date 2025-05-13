@@ -1,6 +1,6 @@
 package edu.test;
 
-public class Armor {
+public class Armor2 {
 	
 	// private field: 클래스 내부에서만 접근 및 수정 가능, 하지만 Getter와 Setter로 외부에서 접근 가능.
 	private String name;

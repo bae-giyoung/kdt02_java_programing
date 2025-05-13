@@ -9,36 +9,42 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 		// 메소드 생성으로 코드 변경해보기!
 		
 		// 1. A 랜덤 배열 생성
-		int[][] A = setMatricRandom(3,5);
-		printMatrics(A, "Matrics A");
+		int[][] A = setMatrixRandom(3,5);
+		printMatrix(A, "Matrics A");
 		
 		// 2. B 랜덤 배열 생성
-		int[][] B = setMatricRandom(3,5);
-		printMatrics(B, "Matrics B");
+		int[][] B = setMatrixRandom(3,5);
+		printMatrix(B, "Matrics B");
 		
 		// 3. C = A + B
-		int[][] C = addMatricsAndMakeIt(A, B);
-		printMatrics(C, "Matrics C");
+		int[][] C = addMatrices(A, B);
+		printMatrix(C, "Matrics C");
 		
 		// 4. D
-		int[][] D = setMatricRandom(5,4);
-		printMatrics(D, "Matrics D");
+		int[][] D = setMatrixRandom(5,4);
+		printMatrix(D, "Matrics D");
 		
 		// 5. E = A * D
-		int[][] E = multiplyMatricsAndMakeIt(A,D);
-		printMatrics(E, "Matrics E");
+		int[][] E = multiplyMatrices(A,D);
+		printMatrix(E, "Matrics E");
 		
 		// 6. F는 A의 전치행렬
-		int[][] F = makeTransposeMatrics(A);
-		printMatrics(F, "Matrics F");
+		int[][] F = makeTransposeMatrix(A);
+		printMatrix(F, "Matrics F");
 		
 		// 7. 건너뜀
 		
     	// 8. A와 E가 같은지 비교
 		System.out.println("===============================");
-		System.out.println("is A and B are Same Matrics?");
-		System.out.println(isMatricsEquel(A,E));
+		System.out.println("is A and E are Same Matrices?");
+		System.out.println(isMatrixEquel(A,E));
 		System.out.println("===============================");
+		
+		System.out.println("===============================");
+		System.out.println("is A and A are Same Matrices?");
+		System.out.println(isMatrixEquel(A,A));
+		System.out.println("===============================");
+		
 		
 		// 9.2차 배열을 table 형태로 출력하기 : printArrayToTable 메소드 만들었음.
 		System.out.println();
@@ -47,7 +53,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 	}
 	
 	// 행력 생성 메소드 (0 ~ 99 랜덤 점수의 배열)
-	public static int[][] setMatricRandom (int r, int c){
+	public static int[][] setMatrixRandom (int r, int c){
 		int[][] arr = new int[r][c];
 		Random rd = new Random();
 		
@@ -61,7 +67,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 	}
 	
 	// 행렬 출력 메소드
-	public static void printMatrics(int[][] arr, String str) {
+	public static void printMatrix(int[][] arr, String str) {
 		System.out.println("=================");
 		System.out.println("Matric " + str);
     	System.out.println("-----------------");
@@ -78,7 +84,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 	}
 	
 	// 행렬 합 연산 메소드
-	public static int[][] addMatricsAndMakeIt (int[][] A, int[][] B){
+	public static int[][] addMatrices (int[][] A, int[][] B){
 		int ar = A.length;
 		int ac = A[0].length;
 		int[][] newArray = new int[ar][ac];
@@ -93,7 +99,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 	}
 	
 	// 행렬 곱 연산 메소드
-	public static int[][] multiplyMatricsAndMakeIt (int[][] A, int[][] B){
+	public static int[][] multiplyMatrices (int[][] A, int[][] B){
 		int ar = A.length;
 		int ac = A[0].length; // ac == br
 		int bc = B[0].length;
@@ -114,7 +120,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 	}
 	
 	// 전치 행렬 메소드
-	public static int[][] makeTransposeMatrics(int[][] A) {
+	public static int[][] makeTransposeMatrix(int[][] A) {
 		int r = A.length;
 		int c = A[0].length;
 		int[][] newArray = new int[c][r];
@@ -129,7 +135,7 @@ public class 실습_4_5_행렬연산_연습2_메소드로 {
 	}
 	
 	// 행렬 비교 메소드
-	public static boolean isMatricsEquel(int[][] A, int[][] B) {
+	public static boolean isMatrixEquel(int[][] A, int[][] B) {
 		Boolean isSameSize = false;
 		Boolean isEquel = false;
 		int ar = A.length;
