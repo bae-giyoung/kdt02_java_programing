@@ -15,7 +15,7 @@ public class 실습_5_3_배열필드 {
 		private float weight;
 		private String[] subjects;
 		private int[] years;
-		int count;
+		private int count;
 		
 	    // 메소드
 	    void show() {
@@ -34,6 +34,8 @@ public class 실습_5_3_배열필드 {
 	    			System.out.print(subjects[count] + "(" + years[count] + "), ");
 	    		count++;
 	    	}
+	    	
+	    	count = 0;
 	    }
 	    
 	    public void setName(String name) {
@@ -59,6 +61,53 @@ public class 실습_5_3_배열필드 {
 	    
 	    //과목, 수강연도를 매개변수로 전달받아 배열에 추가
 		public void addSubjectYear(String subject, int year) {
+			int size = this.subjects.length + 1;
+			
+			String[] newSubjects = new String[size];
+			int[] newYears = new int[size];
+			
+			for (int i = 0; i < size; i++) {
+				if (i != size - 1) {
+					newSubjects[i] = this.subjects[i];
+					newYears[i] = this.years[i];
+				} else {
+					newSubjects[i] = subject;
+					newYears[i] = year;
+				}
+			}
+			
+			this.subjects = newSubjects;
+			this.years = newYears;
+			
+		};
+		
+		//[오버라이딩] 과목, 수강연도를 매개변수로 전달받아 배열에 추가
+		public void addSubjectYear(String[] subjects, int[] years) {
+			
+			if (subjects.length != years.length) {
+				System.out.println("교육과목(수강연도)가 추가되지 않았습니다. 교육과목과 수강연도의 개수를 맞춰주세요");
+				return;
+			}
+			
+			int s1 = this.subjects.length;
+			int s2 = subjects.length;
+			int size = s1 + s2;
+			
+			String[] newSubjects = new String[size];
+			int[] newYears = new int[size];
+			
+			for (int i = 0; i < size; i++) {
+				if (i < s1) {
+					newSubjects[i] = this.subjects[i];
+					newYears[i] = this.years[i];
+				} else {
+					newSubjects[i] = subjects[i - s1];
+					newYears[i] = years[i - s1];
+				}
+			}
+			
+			this.subjects = newSubjects;
+			this.years = newYears;
 			
 		};
 	}
@@ -72,17 +121,31 @@ public class 실습_5_3_배열필드 {
 	        // 첫 번째 객체 생성 및 초기화
 	        Person p1 = new Person();
 	        //다음 코드를 setter, addSubjectYear를 사용하여 수정
-	        p1.name = "홍길동";
-	        p1.age = 25;
-	        p1.weight = 60.56f;
-	        p1.subjects = new String[] {"Mathematics", "Science", "History"};
-	        p1.years = new int[] {2020, 2021, 2022};
+	        p1.setName("홍길동");
+	        p1.setAge(25);
+	        p1.setWeight(60.56f);
+	        p1.setSubjects(new String[] {"Mathematics", "Science", "History"});
+	        p1.setYears(new int[] {2020, 2021, 2022});
 
 	        // 메소드 호출
+	        System.out.println("[p1출력]");
 	        p1.show();
 	        System.out.println();
 	        
-	        // 두 번째 객체 생성 및 초기화
+	        // addSubjectYear로 수정해보기!
+	        System.out.println("[p1출력] 메소드 사용해서 교육과목과 수강연도 수정");
+	        p1.addSubjectYear("Art", 2023);
+	        p1.show();
+	        System.out.println();
+	        
+	        // addSubjectYear(String[], int[])로 수정해보기!
+	        System.out.println("[p1출력] 메소드(배열인자) 사용해서 교육과목과 수강연도 수정");
+	        p1.addSubjectYear(new String[]{"Pilosophy","Literature","Physics"}, new int[]{2022,2023,2025});
+	        p1.show();
+	        System.out.println();
+	        
+	        
+	        // 두 번째 객체 생성 및 초기화 : 세터 사용 안함
 	        Person p2 = new Person();
 	        p2.name = "강감찬";
 	        p2.age = 55;
@@ -91,12 +154,9 @@ public class 실습_5_3_배열필드 {
 	        p2.years = new int[] {2018, 2019, 2020};
 
 	        // 메소드 호출
+	        System.out.println("[p2출력]");
 	        p2.show();
 	    }
 
-		public static Main main(String string, String string2) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 }
