@@ -105,53 +105,49 @@ class Order3 extends SeasonalDiscount {
 	}
 
 	public void addItem(Item3 item, int quantity, String date) {
-		// 초기 배열 생성 1부터 시작
-		if (this.count == 0) {
-			this.items = new Item3[1];
-			this.quantities = new int[1];
-			this.orderDates = new String[1];
+		// 기존의 배열 저장, 첫번째 addItem수행일 경우엔 상요하지 않음.
+		Item3[] oldItems = items;
+		int[] oldQuantities = quantities;
+		String[] oldOrderDates = orderDates;
+		
+		
+		// 새로운 길이의 배열, 길이는 1부터
+		count++;
+		items = new Item3[count];
+		quantities = new int[count];
+		orderDates = new String[count];
+		
+		if (count == 1) {
+			items[0] = item;
+			quantities[0] = quantity;
+			orderDates[0] = date;
 			
-			this.items[0] = item;
-			this.quantities[0] = quantity;
-			this.orderDates[0] = date;
-			
-			this.count++; // count 초기값 0에서 증가시켜줌 +=1
 		} else {
-		// 두번째 부터 실행할 구문
-			int size = this.count + 1;
-			Item3[] newItems = new Item3[size];
-			int[] newQuantities = new int[size];
-			String[] newOrderDates = new String[size];
-			
-			for (int i = 0; i < size; i++) { // size 2 ~
-				if (i != size - 1) {
-					newItems[i] = this.items[i];
-					newQuantities[i] = this.quantities[i];
-					newOrderDates[i] = this.orderDates[i];
+			for (int i = 0; i < count; i++) {
+				if (i < count -1) {
+					items[i] = oldItems[i];
+					quantities[i] = oldQuantities[i];
+					orderDates[i] = oldOrderDates[i];
 				} else {
-					newItems[i] = item;
-					newQuantities[i] = quantity;
-					newOrderDates[i] = date;
+					items[i] = item;
+					quantities[i] = quantity;
+					orderDates[i] = date;					
 				}
 			}
-			
-			this.items = newItems;
-			this.quantities = newQuantities;
-			this.orderDates = newOrderDates;
 		}
-		count++;
+		
 	}
 
 	public double calculateTotal() {
 		int total = 0;
-		for (int i = 0; i < count+1; i++) {
+		for (int i = 0; i < count; i++) {
 			total += items[i].getPrice() * quantities[i];
 		}
 		return customer.applyDiscount(total);
 	}
 
 	public void printOrderSummary() {
-		for (int i = 0; i < count+1; i++) {
+		for (int i = 0; i < count; i++) {
 			System.out.println("아이템: " + items[i].getName() + ", 가격: " + items[i].getPrice() + ", 주문수량: " + quantities[i] + ", 금액: " + (items[i].getPrice() * quantities[i]) + ", 주문일: " + orderDates[i]);
 		}
 		System.out.println("총금액: " + calculateTotal());
