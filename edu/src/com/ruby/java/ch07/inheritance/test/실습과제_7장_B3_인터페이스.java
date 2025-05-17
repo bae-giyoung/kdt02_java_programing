@@ -7,7 +7,7 @@ interface Discountable {
 
 //SeasonalDiscount 클래스: Discountable 인터페이스 구현
 class SeasonalDiscount implements Discountable {
-	private double discountRate;
+	private double discountRate; // 조건에 대해 추후 조건을 알려준다고 하심
 
 	@Override
 	public double getDiscountedPrice(double price) {
@@ -46,7 +46,7 @@ abstract class Item3 {
 	}
 
 	public void reduceStock(int quantity) {
-
+		this.stockQuantity -= quantity;
 	}
 
 	public void show() {
@@ -86,57 +86,68 @@ class Clothing3 extends Item3 {
 
 	@Override
 	public void show() {
-		System.out.println("제품명: " + getName() + ", 가격: " + getPrice() + ", 재고: " + getStockQuantity() + ", 제조년: " + size);	
+		System.out.println("제품명: " + getName() + ", 가격: " + getPrice() + ", 재고: " + getStockQuantity() + ", 사이즈: " + size);	
 	}
 }
 
 //Order 클래스
 class Order3 extends SeasonalDiscount {
-	private final int N = 20;
+	private final int N = 20; // 이건 어디에 사용하는 상수일까?
 	private Customer3 customer; // 고객명
-	private Item3[] items; // 주문 제품들
-	private int[] quantities; // 주문 제품 수량들
-	private String[] orderDates; // 주문일자들
-	private int count = 0; // 왜 static을 썼을까? 일단은 static 지워봄
+	private Item3[] items = new Item3[N]; // 주문 제품들
+	private int[] quantities = new int[N]; // 주문 제품 수량들
+	private String[] orderDates = new String[N]; // 주문일자들
+	private int count = 0;
 	
 	public Order3(Customer3 customer) {
-		super();
+		// super(); 쓰지 않아도 자동으로 호출해 준다.
 		this.customer = customer;
 	}
 
+	// 방법1: 배열로 연습, 아래 배열 필드들의 길이 정해놓지 않고 사용할때.
+//	private Item3[] items; // 주문 제품들
+//	private int[] quantities; // 주문 제품 수량들
+//	private String[] orderDates; // 주문일자들
+//	public void addItem(Item3 item, int quantity, String date) {
+//		// 기존의 배열 저장, 첫번째 수행일 경우엔 사용하지 않음.
+//		Item3[] oldItems = items;
+//		int[] oldQuantities = quantities;
+//		String[] oldOrderDates = orderDates;
+//			
+//		// 새로운 길이의 배열, 길이는 1부터
+//		count++;
+//		items = new Item3[count];
+//		quantities = new int[count];
+//		orderDates = new String[count];
+//		
+//		for (int i = 0; i < count; i++) {
+//			if (count != 1 && i < count -1) {
+//				items[i] = oldItems[i];
+//				quantities[i] = oldQuantities[i];
+//				orderDates[i] = oldOrderDates[i];
+//			} else { // count == 1일때, 즉 addItem 자체의 첫번째 수행인 경우, 그 외엔 마지막 번째인 경우
+//				items[i] = item;
+//				quantities[i] = quantity;
+//				orderDates[i] = date;					
+//			}
+//		}	
+//	}
+	
+	// 방법2: 배열의 최대 길이 정해놓고 작업
 	public void addItem(Item3 item, int quantity, String date) {
-		// 기존의 배열 저장, 첫번째 addItem수행일 경우엔 상요하지 않음.
-		Item3[] oldItems = items;
-		int[] oldQuantities = quantities;
-		String[] oldOrderDates = orderDates;
-		
-		
-		// 새로운 길이의 배열, 길이는 1부터
-		count++;
-		items = new Item3[count];
-		quantities = new int[count];
-		orderDates = new String[count];
-		
-		if (count == 1) {
-			items[0] = item;
-			quantities[0] = quantity;
-			orderDates[0] = date;
-			
-		} else {
-			for (int i = 0; i < count; i++) {
-				if (i < count -1) {
-					items[i] = oldItems[i];
-					quantities[i] = oldQuantities[i];
-					orderDates[i] = oldOrderDates[i];
-				} else {
-					items[i] = item;
-					quantities[i] = quantity;
-					orderDates[i] = date;					
-				}
-			}
+		if (count >= N) {
+			System.out.println("최대 주문 아이템은 20개를 넘길 수 없습니다.");
+			return;
 		}
 		
+		// count 0부터 시작
+		items[count] = item;
+		quantities[count] = quantity;
+		orderDates[count] = date;
+		
+		count++;
 	}
+	
 
 	public double calculateTotal() {
 		int total = 0;
