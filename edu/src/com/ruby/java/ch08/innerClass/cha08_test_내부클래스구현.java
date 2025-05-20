@@ -25,16 +25,16 @@ public class cha08_test_내부클래스구현 {
 		// 첫번째 수행인 경우 head가 null일때
 		if (head == null) {
 			head = new Node(data);
-			System.out.println("첫 번째 add 수행:" + head.data);
+			System.out.println("첫 번째 add 수행: " + head.data);
 			return;
 		}
 		
 		// 두 번째 수행부터
 		Node p = head; // head에서부터 시작
-		while (p != null) { // P == null일 때, 반복문 종료
+		while (p != null) { // p == null일 때, 반복문 종료
 			if (p.link == null) {
 				p.link = new Node(data);
-				System.out.println("add 수행:" + p.link.data);
+				System.out.println("add 수행: " + p.link.data);
 				return;
 			}
 			p = p.link;
@@ -55,9 +55,6 @@ public class cha08_test_내부클래스구현 {
 				p = p.link;
 			}
 		}
-		
-		// 오름차순으로 출력하기
-		
 	}
 	
 	// 리스트 삭제 메서드
@@ -94,14 +91,14 @@ public class cha08_test_내부클래스구현 {
 		myList.printList();
 
 		System.out.println();
-		System.out.println("======== 추가 시작 =========");
+		System.out.println("======== 추가 실행 내역 =========");
 		myList.add("JAVA");
 		myList.add("HTML");
 		myList.add("CSS");
 		myList.add("Javascript");
 		
 		System.out.println();
-		System.out.println("======== 오름차순 정리로 출력 시작 =========");
+		System.out.println("======== 출력 시작 =========");
 		myList.printList();
 		
 		System.out.println();
