@@ -97,7 +97,7 @@ class Library {
 	//public Book removeBook() {
 	public Book removeBook(Book book) {
 		if (books.size() == 0)
-			throw new UnderflowException(); // throw를 하게 되면 return으로 메서드 종료가 되는 것일까? 그럼 else도 필요 없을 것 같은데?
+			throw new UnderflowException(); // throw를 하게 되면 return으로 메서드의 실행이 종료 되는 것일까? 그럼 else도 필요 없을 것 같은데?
 		
 		books.remove(book);
 		return book; // 이렇게 해도 될까?
