@@ -113,7 +113,7 @@ class Library {
 	public void sortBooksByTitle() {
 		// 람다식 모름: 실습9_1의 코드 참조: Arrays.sort(books, 0, top, (b1, b2) -> b1.getTitle().compareTo(b2.getTitle()));
 		books.sort((b1, b2) -> b1.getTitle().compareTo(b2.getTitle()));
-		// books.sort(); // 이거는 왜 되는 것 처럼 보일까?
+		// books.sort(null); // 이거는 왜 되는 것 처럼 보일까?
 	}
 
 	public void sortBooksByISBN() {
