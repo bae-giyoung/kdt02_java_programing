@@ -85,7 +85,8 @@ class Library {
 	}
 
 	// 책 추가 (용량 초과 시 OverflowException 발생)
-	public void addBook(Book book) throws OverflowException {
+//	public void addBook(Book book) throws OverflowException {
+	public void addBook(Book book) { // 위 아래 throws 구문 사용하고 안하고 차이 알아보기!
 		if (books.size() >= CAPACITY)
 			throw new OverflowException();
 		else
@@ -93,7 +94,8 @@ class Library {
 	}
 
 	// 책 삭제 (빈 목록에서 삭제 시 UnderflowException 발생)
-	public Book removeBook(Book book) throws UnderflowException {
+//	public Book removeBook(Book book) throws UnderflowException {
+	public Book removeBook(Book book) { // 위 아래 throws 구문 사용하고 안하고 차이 알아보기!
 		if (books.size() == 0)
 			throw new UnderflowException(); // throw를 하게 되면 return으로 메서드 종료가 되는 것일까? 그럼 else도 필요 없을 것 같은데?
 		books.remove(book);
