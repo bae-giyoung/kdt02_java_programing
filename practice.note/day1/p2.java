@@ -1,6 +1,7 @@
 package day1;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class p2 {
 
@@ -79,4 +80,6 @@ public class p2 {
 		// 1, 5 		[1, 2, 3, 4, 5]
 		// 0, 0 		[0]
 		// 99, 100		[99, 100]
+        
+        
 }
