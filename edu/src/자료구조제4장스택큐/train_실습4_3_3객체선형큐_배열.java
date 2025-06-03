@@ -1,6 +1,6 @@
 package 자료구조제4장스택큐;
 /*
- * 실습 4_6번 객체 원형 큐를 배열로 구현
+ * 실습 4_6번 객체 원형 큐를 배열로 구현 => 선형 큐
  * 교재 148 실습 4_3은 정수 원형 큐를 배열로 구현한 코드임 > 객체 버젼으로 구현
  */
 
@@ -14,7 +14,16 @@ import java.util.Scanner;
 class Point3 {
 	private int ix;
 	private int iy;
-
+	
+	public Point3(int ix, int iy) {
+		this.ix = ix;
+		this.iy = iy;
+	}
+	
+	@Override
+	public String toString() {
+		return "(" + ix + ", " + iy + ")";
+	}
 }
 
 //int형 고정 길이 큐
@@ -27,44 +36,52 @@ class objectQueue2 {
 
 //--- 실행시 예외: 큐가 비어있음 ---//
 	public class EmptyQueueException extends RuntimeException {
-		public EmptyQueueException() {
-		}
+		public EmptyQueueException() {}
 	}
 
 //--- 실행시 예외: 큐가 가득 찼음 ---//
 	public class OverflowQueueException extends RuntimeException {
-		public OverflowQueueException() {
-		}
+		public OverflowQueueException() {}
 	}
 
 //--- 생성자(constructor) ---//
-public objectQueue2(int maxlen) {
-
-}
+	public objectQueue2(int maxlen) {
+		capacity = maxlen;
+		que = new Point3[capacity];
+		front = rear = -1; // 이번엔 -1부터 시작해보기
+	}
 
 //--- 큐에 데이터를 인큐 ---//
-	public int enque(Point3 x) throws OverflowQueueException {
-
+	public Point3 enque(Point3 x) throws OverflowQueueException {
+		if(isFull())
+			throw new OverflowQueueException();
+		rear = (rear+1)%capacity;
+		return que[rear] = x;
 	}
 
 //--- 큐에서 데이터를 디큐 ---//
 	public Point3 deque() throws EmptyQueueException {
-
+		if(isEmpty())
+			throw new EmptyQueueException();
+		front = (front+1)%capacity;
+		return que[front];
 	}
 
 //--- 큐에서 데이터를 피크(프런트 데이터를 들여다봄) ---//
 	public Point3 peek() throws EmptyQueueException {
-
+		if(isEmpty())
+			throw new EmptyQueueException();
+		return que[front];
 	}
 
 //--- 큐를 비움 ---//
 	public void clear() {
-		front = rear = 0;
+		front = rear = 0; // 물리적인 삭제가 아님, 논리적인 삭제
 	}
 
 //--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
 	public int indexOf(Point3 x) {
-
+		
 	}
 
 //--- 큐의 크기를 반환 ---//

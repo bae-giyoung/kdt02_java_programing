@@ -22,10 +22,18 @@ class IntQueue3 {
 	private int capacity; // 큐의 크기
 	private int front; // 맨 처음 요소 커서
 	private int rear; // 맨 끝 요소 커서
-	boolean isEmptyTag;
+	//boolean isEmptyTag;
 	private int num; // 현재 데이터 개수>> 삭제한 후에 queue가 full, empty를 구분하는 실습
 	//enque 하기전에 갯수를 세어 front==rear 조건을 체크한다
 	//deque도 마찬가지임 
+	
+	public int getFront() {
+		return front;
+	}
+	
+	public int getRear() {
+		return rear;
+	}
 	
 //--- 실행시 예외: 큐가 비어있음 ---//
 	public class EmptyIntQueue3Exception extends RuntimeException {
@@ -41,7 +49,7 @@ class IntQueue3 {
 	public IntQueue3(int maxlen) {
 		capacity = maxlen;
 		front = rear = num = 0;
-		isEmptyTag = true;
+		//isEmptyTag = true;
 		try {
 			que = new int[capacity];
 		} catch(OutOfMemoryError e) {
@@ -56,7 +64,7 @@ class IntQueue3 {
 		if(num >= capacity)
 			throw new OverflowIntQueue3Exception();
 		que[rear] = x;
-		rear = (rear+1)%capacity;
+		rear = (rear+1)%capacity; // 0 1 2 3 4 ... capacity-1
 		num++;
 		return x;
 	}
@@ -76,7 +84,7 @@ class IntQueue3 {
 		if(num <= 0)
 			throw new EmptyIntQueue3Exception();
 		int result = que[front];
-		front = (front+1)%capacity;
+		front = (front+1)%capacity; // 0 1 2 3 4 ... capacity-1
 		num--;
 		return result;
 	}
@@ -114,8 +122,9 @@ class IntQueue3 {
 //--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
 	public int indexOf(int x) {
 		for(int i=0; i<num; i++) {
-			if(x == que[(front + i)%capacity])
-				return (front + i)%capacity;
+			int idx = (front + i)%capacity; // front .... capacity-1
+			if(x == que[idx]) // front front+1 front+2 ... capacity-1
+				return idx;
 		}
 		return -1;
 	}
@@ -145,10 +154,12 @@ class IntQueue3 {
 		if(num <= 0) {
 			System.out.println("큐가 비어있습니다.");
 		} else {
-			for(int i=0; i<num; i++) {
-				System.out.print(que[i]+" ");
+			System.out.print("| ");
+			for(int i=front; i<front+num; i++) {
+				System.out.print(que[i%capacity]+" | ");
 			}
 		}
+		System.out.println("\tfront: "+front+", rear: "+rear);
 	}
 }
 public class train_실습4_3_2정수원형큐_배열 {
@@ -160,12 +171,12 @@ public class train_실습4_3_2정수원형큐_배열 {
 		while (true) {
 			System.out.println(" "); // 메뉴 구분을 위한 빈 행 추가
 			System.out.printf("현재 데이터 개수: %d / %d\n", oq.size(), oq.getCapacity());
-			System.out.print("(1)인큐　(2)디큐　(3)피크　(4)덤프　(0)종료: ");
+			System.out.print("(1)인큐　(2)디큐　(3)피크　(4)덤프 (5)클리어　(0)종료: ");
 			int menu = stdIn.nextInt();
 			switch (menu) {
 			case 1: // 인큐
 				rndx = random.nextInt(20);
-				System.out.print("입력데이터: (" + rndx +")");
+				System.out.println("===== 입력 데이터: (" + rndx +"), rear: " + oq.getRear());
 				try {
 					oq.enque(rndx);
 				} catch(자료구조제4장스택큐.IntQueue3.OverflowIntQueue3Exception e) {
@@ -176,7 +187,7 @@ public class train_실습4_3_2정수원형큐_배열 {
 			case 2: // 디큐
 				try {
 					p = oq.deque();
-					System.out.println("디큐한 데이터는 " + p + "입니다.");
+					System.out.println("===== 디큐한 데이터: (" + p + "), front: " + oq.getFront());
 				} catch (자료구조제4장스택큐.IntQueue3.EmptyIntQueue3Exception e) {
 					System.out.println("큐가 비어 있습니다.");
 				}
@@ -194,8 +205,18 @@ public class train_실습4_3_2정수원형큐_배열 {
 			case 4: // 덤프
 				oq.dump();
 				break;
+				
+			case 5: // 클리어
+				oq.clear();
+				System.out.println("큐를 비웠습니다.");
+				break;
+				
+			case 0: // 종료 어떻게 하지?
+				System.out.println("프로그램을 종료합니다..........");
+				break;
+				
 			default:
-				System.out.println("명령어를 다시 입력하세요(1:인큐, 2:디큐, 3:피크, 4:덤프, 0:종료)");
+				System.out.println("명령어를 다시 입력하세요(1:인큐, 2:디큐, 3:피크, 4:덤프, 5:클리어, 0:종료)");
 				break;
 			}
 		}
