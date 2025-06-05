@@ -1,4 +1,4 @@
-package Chap4_스택과큐;
+package 자료구조제4장스택큐;
 /*
  * 실습 4_3번
  * point(x,y) 객체를 스택에 저장
@@ -19,14 +19,14 @@ class Point2 {
 	private int ix;
 	private int iy;
 
-	public Point2(int x, int y) {
-		ix = x;
-		iy = y;
+	public Point2(int ix, int iy) {
+		this.ix = ix;
+		this.iy = iy;
 	}
 
 	@Override
 	public String toString() {
-	
+		
 	}
 
 	@Override

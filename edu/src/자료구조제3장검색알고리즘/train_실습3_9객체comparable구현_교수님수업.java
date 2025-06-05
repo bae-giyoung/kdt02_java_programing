@@ -2,12 +2,12 @@ package 자료구조제3장검색알고리즘;
 
 import java.util.Arrays;
 
-class Student implements Comparable<Student> {
+class Student3 implements Comparable<Student> {
 	private String sid;
 	private String sname;
 	private String dept;
 	
-	public Student(String sid, String sname, String dept) {
+	public Student3(String sid, String sname, String dept) {
 		this.sid = sid;
 		this.sname = sname;
 		this.dept = dept;
@@ -17,6 +17,7 @@ class Student implements Comparable<Student> {
 		return sid;
 	}
 
+	// 보통 반드시 Override하는 메소드 ##E(이퀄), H(해시코드), S(투스트링)
 	@Override
 	public int compareTo(Student o) {
 		return sid.compareTo(o.getSid()); 
@@ -28,7 +29,7 @@ class Student implements Comparable<Student> {
 	}
 }
 
-public class train_실습3_9객체comparable구현 {
+public class train_실습3_9객체comparable구현_교수님수업 {
 	
 	public static void show(Student[] arr) {
 		for(int i=0; i<arr.length; i++) {
@@ -38,11 +39,11 @@ public class train_실습3_9객체comparable구현 {
 	
 	public static void main(String[] args) {		
 		Student[] students = {
-				new Student("S001", "영희", "Math"),
-				new Student("S003", "민수", "Computer"),
-				new Student("S002", "철수", "Physics"),
-				new Student("S005", "지영", "Biology"),
-				new Student("S004", "준호", "Chemistry")
+				new Student3("S001", "영희", "Math"),
+				new Student3("S003", "민수", "Computer"),
+				new Student3("S002", "철수", "Physics"),
+				new Student3("S005", "지영", "Biology"),
+				new Student3("S004", "준호", "Chemistry")
 		};
 		
 		System.out.println("=== 정렬 전 학생 목록 ===");
@@ -54,9 +55,9 @@ public class train_실습3_9객체comparable구현 {
 		show(students);
 		
 		Student[] targets = {
-				new Student("S002", "철수", "Physics"),
-				new Student("S006", "홍길동", "Law"),
-				new Student("S004", "준호", "Chemistry")
+				new Student3("S002", "철수", "Physics"),
+				new Student3("S006", "홍길동", "Law"),
+				new Student3("S004", "준호", "Chemistry")
 		};
 		
 		System.out.println("\n=== 이진 탐색 결과 ===");

@@ -1,7 +1,82 @@
 package 자료구조제3장검색알고리즘;
 
-public class train_실습3_10_객체comparator구현 {
+import java.util.Arrays;
+import java.util.Comparator;
 
+class Student2 {
+	private String sid;
+	private String sname;
+	private String dept;
+	
+	public Student2(String sid, String sname, String dept) {
+		this.sid = sid;
+		this.sname = sname;
+		this.dept = dept;
+	}
+	
+	public String getSid() {
+		return sid;
+	}
+	
+	@Override
+	public String toString() {
+		return sid+", "+sname+", "+dept;
+	}
+}
+
+public class train_실습3_10_객체comparator구현 {
+	
+	public static void show(Student2[] arr) {
+		for(Student2 x : arr) {
+			System.out.println(x);
+		}
+	}
+	
+	public static void main(String[] args) {
+		Student2[] students = {
+				new Student2("S001", "영희", "Math"),
+				new Student2("S003", "민수", "Computer"),
+				new Student2("S002", "철수", "Physics"),
+				new Student2("S005", "지영", "Biology"),
+				new Student2("S004", "준호", "Chemistry")
+		};
+		
+		System.out.println("=== 정렬 전 학생 배열 출력 ===");
+		show(students);
+		
+		// 교수님 첨삭
+		Comparator<Student2> sidCompare = (a, b) -> a.getSid().compareTo(b.getSid());
+		
+		Arrays.sort(students, sidCompare);
+		
+		/* 이것과 같은 코드! 람다식을 사용하자!
+		Arrays.sort(students, new Comparator<Student2>(Student o1, Student o2) {
+			@Override
+			public int compare(Student2 o1, Student2 o2) {
+				return o1.getSid().compareTo(o2.getSid());
+			}
+		}); */
+		
+		System.out.println("\n=== 정렬 후 학생 배열 출력 ===");
+		show(students);
+		
+		// 다음 탐색 대상 배열을 정의하고, 확장형 for문으로 각 항목에 대해 Arrays.binarySearch(배열, key, comparator)로 탐색한다.
+		Student2[] targets = {
+				new Student2("S002", "철수", "Physics"),
+				new Student2("S006", "홍길동", "Law"),
+				new Student2("S004", "준호", "Chemistry")
+		};
+		
+		
+		System.out.println("\n=== 이진 탐색 결과 ===");
+		for(Student2 x : targets) {
+			if(Arrays.binarySearch(students, x, sidCompare) >= 0)
+				System.out.println("찾은 학생: "+x);
+			else
+				System.out.println("학번 "+x.getSid()+"인 학생은 존재하지 않습니다.");
+		}
+	}
+	
 /*
  * Comparator를 사용한 학생 정보 배열 정렬 및 이진 탐색 구현
  * 
