@@ -24,15 +24,19 @@ class Point2 {
 		this.iy = iy;
 	}
 
+	public int getIx() {
+		return ix;
+	}
+
+	public int getIy() {
+		return iy;
+	}
+	
 	@Override
 	public String toString() {
-		
+		return "("+ix+", "+iy+")";
 	}
 
-	@Override
-	public boolean equals(Object p) {
-
-	}
 }
 
 class objectStack{
@@ -44,12 +48,16 @@ class objectStack{
 	//--- 실행시 예외: 스택이 비어있음 ---//
 	// generic class는 Throwable을 상속받을 수 없다 - 지원하지 않는다
 	public class EmptyGenericStackException extends Exception {
-//추가
+		public EmptyGenericStackException(String msg) {
+			super(msg);
+		}
 	}
 
 	//--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowGenericStackException extends RuntimeException {
-//추가
+		public OverflowGenericStackException(String msg) {
+			super(msg);
+		}
 	}
 
     private List<Point2> data;           // 스택용 배열
@@ -58,23 +66,32 @@ class objectStack{
 
 //--- 생성자(constructor) ---//
 	public objectStack(int capacity) {
-		//구현
+		this.capacity = capacity;
+		this.top = -1;
+		data = new ArrayList<Point2>(capacity);
 	}
 
 //--- 스택에 x를 푸시 ---//
 	public boolean push(Point2 x) throws OverflowGenericStackException {
-		//구현
-
+		if(isFull())
+			throw new OverflowGenericStackException("스택이 가득 참");
+		top++;
+		data.add(x);
+		return true;
 	}
 
 //--- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
 	public Point2 pop() throws EmptyGenericStackException  {
-		//구현
+		if(isEmpty())
+			throw new EmptyGenericStackException("스택이 비어 있음");
+		return data.remove(top--);
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public Point2 peek() throws EmptyGenericStackException  {
-		//구현
+		if(isEmpty())
+			throw new EmptyGenericStackException("스택이 비어 있음");
+		return data.get(top);
 	}
 
 //--- 스택을 비움 ---//
@@ -84,7 +101,11 @@ class objectStack{
 
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(Point2 x) {
-		//구현
+		for(int i=0; i<=top; i++) { // top=-1일때, 즉 비어있을 때는 실행 안됨
+			if(x.getIx() == data.get(i).getIx() && x.getIy() == data.get(i).getIy())
+				return i;
+		}
+		return -1;
 	}
 
 //--- 스택의 크기를 반환 ---//
@@ -94,25 +115,30 @@ class objectStack{
 
 //--- 스택에 쌓여있는 데이터 갯수를 반환 ---//
 	public int size() {
-		return top;
+		return top + 1;
 	}
 
 //--- 스택이 비어있는가? ---//
 	public boolean isEmpty() {
-		return top <= 0;
+		return top < 0;
 	}
 
 //--- 스택이 가득 찼는가? ---//
 	public boolean isFull() {
-		return top >= capacity;
+		return (top + 1) >= capacity;
 	}
 
 //--- 스택 안의 모든 데이터를 바닥 → 꼭대기 순서로 출력 ---//
 	public void dump() {
-		//구현
+		if(isEmpty()) {
+			System.out.println("스택이 비어 있음");
+		}
+		for(int i=0; i<=top; i++) { // 스택이 비어있을 때(top=-1) 실행 안됨
+			System.out.println(data.get(i));
+		}
 	}
 }
-public class 실습4_2_1객체스택 {
+public class train_실습4_2_2객체스택_리스트 {
 
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);

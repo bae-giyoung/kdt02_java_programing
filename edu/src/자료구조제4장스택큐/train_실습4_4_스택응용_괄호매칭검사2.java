@@ -21,31 +21,56 @@ package 자료구조제4장스택큐;
 */
 import java.util.*;
 
-public class train_실습4_4_스택응용_괄호매칭검사 {
+//1. 여는 괄호가 나오면 추가, 또는 닫는 괄호가 나오면 추가
+//1a. if( ch == '(' | ch == '{' | ch == '[' | ch == '<' ) stack.push(ch);
+//2a. if( ch == '(' | ch == '{' | ch == '[' | ch == '<' ) stack.pop(ch);
+//	혹시 비었니?
+//	stack.pop()
+//비교 -> isFalse;
+/*
+* 2장 제출 과제 
+* Comparable 인터페이스의 구현 
+* 5번 실습 - 2장 실습 2-10를 수정하여 객체 배열의 정렬 구현
+*/
 
-	// [코드 수정] 다시 작성함! -> Stack<> 사용 및 논리 오류 수정
+public class train_실습4_4_스택응용_괄호매칭검사2 {
+
+
     public static boolean isValid(String s) {
         //Map<Character, Character> pairs = *** // 사용 추천 "[ ]"을 map 쌍으로 정의
     	HashMap<Character, Character> pairs = new HashMap<Character, Character>();
-    	Stack<Character> stk = new Stack<Character>();
+    	CharStk opStk = new CharStk();
+    	CharStk clStk = new CharStk();
     	Character[] opens = {'(','{','[','<'};
     	Character[] closes = {')','}',']','>'};
     	
     	for(int i=0; i<opens.length; i++)
     		pairs.put(opens[i], closes[i]);
     	
-    	// 문자열에서 여는 괄호를 추출하여 순서대로 스택에 push하고, (순서 대로 제일 안쪽의 괄호부터)닫히는 괄호가 있으면 stk.peek()와 쌍이 되는 닫는 괄호인지 비교 후 쌍이 맞으면 pop 해줬음. 
+    	// stk 두개를 만들어서 정렬 후 비교
     	for(int i=0; i<s.length(); i++) {
     		Character ch = s.charAt(i);
-    		if(pairs.containsKey(ch))
-    			stk.push(ch);
-    		if(pairs.containsValue(ch)) {
-    			if(pairs.get(stk.peek()) == ch)
-    				stk.pop();
-    		}
+    		if(pairs.containsKey(ch)) 
+    			opStk.push(pairs.get(ch));
+    		if(pairs.containsValue(ch))
+    			clStk.push(ch);
     	}
     	
-    	return stk.isEmpty(); // (순서대로) 제일 안쪽의 괄호에서 부터 제거한 결과. 즉 전부 쌍이 맞으면 비어 있음. <({}){}()>...
+    	if(opStk.size() != clStk.size())
+    		return false;
+    	
+    	opStk.getStk().sort((a,b)->a.compareTo(b));
+    	clStk.getStk().sort((a,b)->a.compareTo(b));
+    	
+    	while(opStk.size() != 0 && opStk.peek() == clStk.peek()) {
+    		opStk.pop();
+    		clStk.pop();
+    	}
+    	
+    	if(opStk.size() == 0)
+    		return true;
+    	else
+    		return false;
     }
 
     public static void main(String[] args) {
