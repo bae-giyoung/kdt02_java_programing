@@ -10,6 +10,9 @@ package 자료구조제4장스택큐;
   1. 여는 괄호는 반드시 닫는 괄호와 짝을 이뤄야 한다.
   2. 괄호들은 올바르게 중첩되어야 한다.
   3. 괄호 외의 문자는 무시한다.
+  
+Java 공부용 조건:
+  1. Map<Character, Character> pairs = *** // 사용 추천 "[ ]"을 map 쌍으로 정의
 
 입력 형식:
   한 줄에 괄호 문자열이 주어지고, 문자열은 괄호 외에도 다른 문자를 포함.
@@ -29,7 +32,6 @@ public class train_실습4_4_스택응용_괄호매칭검사 {
 
 	// [코드 수정] 다시 작성함! -> Stack<> 사용 및 논리 오류 수정
     public static boolean isValid(String s) {
-        //Map<Character, Character> pairs = *** // 사용 추천 "[ ]"을 map 쌍으로 정의
     	HashMap<Character, Character> pairs = new HashMap<Character, Character>();
     	Stack<Character> stk = new Stack<Character>();
     	int opCnt = 0;

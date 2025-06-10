@@ -26,13 +26,11 @@ class Offsets4 {
 		this.a = a; this.b = b;
 	}
 }
-public class train_5_7_1KnightTracking_실습 {
-//	static Offsets4[] moves = new Offsets4[8];//static을 선언하는 이유를 알아야 한다
-//    static final int N = 8;
-	
+
+public class train_5_7_1KnightTracking_실습 {	
 	// 5*5로 먼저 풀어보기!
-    static Offsets4[] moves = new Offsets4[8];//static을 선언하는 이유를 알아야 한다
-    static final int N = 5;
+    static Offsets4[] moves = new Offsets4[8];// 8가지 방향을 담은 배열
+    static final int N = 5; // 5로 해보고 8로 변경하기
 
 	
     // 체스판 배열
@@ -51,7 +49,11 @@ public class train_5_7_1KnightTracking_실습 {
 
     // 체스판을 초기화 (-1로 설정)
     private static void initializeBoard() {
-    	
+    	for(int i=0; i<N; i++) {
+    		for(int j=0; j<N; j++) {
+    			board[i][j] = -1;
+    		}
+    	}
     }
 
     // 체스판의 범위 내에서 유효한 움직임인지 확인
@@ -61,10 +63,11 @@ public class train_5_7_1KnightTracking_실습 {
 
     // 나이트 투어 알고리즘 (비재귀적으로 스택 사용)
     private static boolean solveKnightTracking(int startX, int startY) {
-    	for (int ia = 0; ia < N; ia++)
+    	for (int ia = 0; ia < 8; ia++)
     		moves[ia] = new Offsets4(0, 0);//배열에 Offsets4 객체를 치환해야 한다.
-    	// private field moves는 offset4의 배열, moves는 knight가 움직일 수 있는 방향의 배열 -> 각 방향의 offset4는 좌표
+    	// static field moves는 knight가 움직일 수 있는 8가지 방향(offset4)의 배열
     	
+    	// 나이트가 이동할 수 있는 8가지 방향
     	moves[0].a = -2;	moves[0].b = -1;//NW으로 이동
     	moves[1].a = -2;	moves[1].b = 1;//NE
     	moves[2].a = -1;	moves[2].b = 2;//EN
@@ -73,23 +76,54 @@ public class train_5_7_1KnightTracking_실습 {
     	moves[5].a = 2;		moves[5].b = -1;//SW
     	moves[6].a = -1;	moves[6].b = -2;//WS
     	moves[7].a = 1;		moves[7].b = -2;//WN
-        // 나이트가 이동할 수 있는 8가지 방향
         
     	// 이동 경로를 저장할 stack
         Stack<Point> stack = new Stack<>();
 
         // 시작 위치를 스택에 푸시
-        // Point 객체는 knight의 위치를 저장하는 객체
         stack.push(new Point(startX, startY, 0));
-        board[startX][startY] = 0; // 시작 위치는 첫 번째 이동 -> 값은 count, 0부터 시작(시작점에서는 움직이지 않았음)
+        board[startX][startY] = 0; // 시작 위치는 첫 번째 이동 -> 자리를 차지하면 0부터 채워 주자
+        int nextX = startX;
+        int nextY = startY;
 
-        while (!stack.isEmpty()) { // stack이 비어있으면 들어오지 않고 종료
+        while (!stack.isEmpty()) { // stack이 비게 되면 종료
+
+        	// board가 가득 채워지면 성공! -> p의 moveToward == N*N-1 이면 가득 찬 것
+        	if(stack.size() == N*N) return true;
+        	//System.out.println(stack.size());
+        	
+            Point p = stack.peek();
+            nextX = p.x;
+            nextY = p.y;
+            int moveT = p.moveToward;
             
-            // 8가지 방향으로 나이트 이동 시도
-        	// Point의 moveTowoard는 무엇인가?
-
-            // 더 이상 이동할 곳이 없을 경우
-           
+            // 8가지 방향으로 나이트 이동 시도 -> isSafe(x, y)
+        	for(int i=moveT; i<moves.length; i++) {
+    			int newX = p.x + moves[i].a;
+    			int newY = p.y + moves[i].b;
+    		
+        		if(isSafe(newX, newY)) {
+        			nextX = newX;
+        			nextY = newY;
+        			p.moveToward = i + 1;
+        			break;
+        		}
+        	}
+        	
+        	
+        	if(isSafe(nextX, nextY)) {
+        		// 1. 다음 칸이 비워져 있는 경우
+        		stack.push(new Point(nextX, nextY, 0));
+        		board[nextX][nextY] = 0;
+        	} else {
+        		// 2. nextX, nextY가 변하지 않은 경우, 더 이상 이동할 곳이 없는 경우
+        		// 물리기 backtracking
+        		// stack.pop();
+        		// 물린 칸은 다시 -1로 초기화
+        		stack.pop();
+        		board[nextX][nextY] = -1;
+        	}
+        	
         }
 
         return false; // 해결하지 못함
@@ -97,7 +131,9 @@ public class train_5_7_1KnightTracking_실습 {
 
     // 결과 출력
     private static void showTracking() {
-
+//    	for(int i=0; i<stack.size(); i++) {
+//    		
+//    	}
     }
 
     public static void main(String[] args) {
@@ -106,6 +142,7 @@ public class train_5_7_1KnightTracking_실습 {
         // 나이트가 (0, 0)에서 시작
         if (solveKnightTracking(0, 0)) {
             showTracking();
+            System.out.println("성공");
         } else {
             System.out.println("해결할 수 없습니다.");
         }
