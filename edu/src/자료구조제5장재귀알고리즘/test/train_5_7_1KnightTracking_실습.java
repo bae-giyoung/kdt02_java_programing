@@ -1,4 +1,4 @@
-package 자료구조제5장재귀알고리즘;
+package 자료구조제5장재귀알고리즘.test;
 
 import java.util.Stack;
 
@@ -31,7 +31,7 @@ public class train_5_7_1KnightTracking_실습 {
 //    static final int N = 8;
 	
 	// 5*5로 먼저 풀어보기!
-    static Offsets4[] moves = new Offsets4[5];//static을 선언하는 이유를 알아야 한다
+    static Offsets4[] moves = new Offsets4[8];//static을 선언하는 이유를 알아야 한다
     static final int N = 5;
 
 	
@@ -51,7 +51,7 @@ public class train_5_7_1KnightTracking_실습 {
 
     // 체스판을 초기화 (-1로 설정)
     private static void initializeBoard() {
- 
+    	
     }
 
     // 체스판의 범위 내에서 유효한 움직임인지 확인
@@ -63,6 +63,8 @@ public class train_5_7_1KnightTracking_실습 {
     private static boolean solveKnightTracking(int startX, int startY) {
     	for (int ia = 0; ia < N; ia++)
     		moves[ia] = new Offsets4(0, 0);//배열에 Offsets4 객체를 치환해야 한다.
+    	// private field moves는 offset4의 배열, moves는 knight가 움직일 수 있는 방향의 배열 -> 각 방향의 offset4는 좌표
+    	
     	moves[0].a = -2;	moves[0].b = -1;//NW으로 이동
     	moves[1].a = -2;	moves[1].b = 1;//NE
     	moves[2].a = -1;	moves[2].b = 2;//EN
@@ -73,16 +75,18 @@ public class train_5_7_1KnightTracking_실습 {
     	moves[7].a = 1;		moves[7].b = -2;//WN
         // 나이트가 이동할 수 있는 8가지 방향
         
+    	// 이동 경로를 저장할 stack
         Stack<Point> stack = new Stack<>();
 
         // 시작 위치를 스택에 푸시
+        // Point 객체는 knight의 위치를 저장하는 객체
         stack.push(new Point(startX, startY, 0));
-        board[startX][startY] = 0; // 시작 위치는 첫 번째 이동
+        board[startX][startY] = 0; // 시작 위치는 첫 번째 이동 -> 값은 count, 0부터 시작(시작점에서는 움직이지 않았음)
 
-        while (!stack.isEmpty()) {
+        while (!stack.isEmpty()) { // stack이 비어있으면 들어오지 않고 종료
             
             // 8가지 방향으로 나이트 이동 시도
-           
+        	// Point의 moveTowoard는 무엇인가?
 
             // 더 이상 이동할 곳이 없을 경우
            
@@ -97,8 +101,6 @@ public class train_5_7_1KnightTracking_실습 {
     }
 
     public static void main(String[] args) {
-
-
         initializeBoard();
 
         // 나이트가 (0, 0)에서 시작
