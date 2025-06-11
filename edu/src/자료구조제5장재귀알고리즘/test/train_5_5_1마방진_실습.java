@@ -24,7 +24,6 @@ public class train_5_5_1마방진_실습 {
         // 마방진 생성 알고리즘 (루벤스의 방법)
         int row = 0, col = n / 2; // 시작 위치
         for (int num = 1; num <= n * n; num++) {
-        	// 기저조건? 없음. 1~n*n까지의 숫자 배치후 종료
         	
         	// 처음 시작
         	if(num == 1) {
@@ -33,7 +32,7 @@ public class train_5_5_1마방진_실습 {
         	}
         	
         	// 두번째 부터
-    		// 첫 이동 : (row-1, col+1)
+    		// 첫 이동 : (row-1, col+1) // 모듈레이션 N으로 나눠? 무슨 뜻일까?
     		int nrow = row > 0 ? row-1 : n-1;
     		int ncol = col < n-1 ? col+1 : 0;
     		
