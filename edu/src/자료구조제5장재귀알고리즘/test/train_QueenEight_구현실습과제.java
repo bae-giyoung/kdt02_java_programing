@@ -135,7 +135,7 @@ public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x-
 
 //배열 d에서 행 cx, 열 cy에 퀸을 남동, 북서 대각선으로 배치할 수 있는지 조사
 public static boolean checkDiagSE(int[][] d, int cx, int cy) {// x++, y++ or x--, y--
-	for(int i=0; cx+i<d.length && cy+i<d.length; i++) { // 1,2
+	for(int i=0; cx+i<d.length && cy+i<d.length; i++) {
 		if(d[cx+i][cy+i] != 0) return false;
 	}
 	for(int i=1; cx-i>=0 && cy-i>=0; i++) {

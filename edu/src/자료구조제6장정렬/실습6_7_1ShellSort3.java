@@ -1,4 +1,4 @@
-package Chap6_Sorting;
+package 자료구조제6장정렬;
 
 import java.util.Random;
 //셸정렬(버전 2 : h = …, 40, 13, 4, 1)

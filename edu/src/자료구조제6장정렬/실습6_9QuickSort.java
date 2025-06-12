@@ -1,4 +1,4 @@
-package Chap6_Sorting;
+package 자료구조제6장정렬;
 
 import java.util.Random;
 import java.util.Scanner;
