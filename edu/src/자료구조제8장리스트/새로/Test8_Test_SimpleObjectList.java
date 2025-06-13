@@ -33,7 +33,7 @@ class SimpleObject {
 	// --- 회원번호로 순서를 매기는 comparator ---//
 	public static final Comparator<SimpleObject> NO_ORDER = new NoOrderComparator();
 
-	private static class NoOrderComparator implements Comparator<SimpleObject> { // 과제
+	private static class NoOrderComparator implements Comparator<SimpleObject> {
 		@Override
 		public int compare(SimpleObject d1, SimpleObject d2) {
 			return (d1.no > d2.no) ? 1 : (d1.no < d2.no) ? -1 : 0;
