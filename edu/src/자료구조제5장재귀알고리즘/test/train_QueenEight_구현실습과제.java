@@ -71,7 +71,7 @@ public class train_QueenEight_구현실습과제 {
 		rowState[0] = iy;
 		
 		while (true) {
-			if (st.isEmpty() && iy == 8) { // iy가 맞는 것 같다.
+			if (st.isEmpty() && iy == d[0].length) {
 				break;
 			}
 			
@@ -98,7 +98,7 @@ public class train_QueenEight_구현실습과제 {
 			iy=0;
 			count++;
 			
-			if (count == 8) { //8개를 모두 배치하면
+			if (count == d.length) { //N개를 모두 배치하면
 				System.out.println("\n["+ (++numberOfSolutions) +"번째 솔루션]");
 				showQueens(d);
 				// 퀸 새로 배치
@@ -153,14 +153,14 @@ public class train_QueenEight_구현실습과제 {
 	}
 	
 	//배열 d에서 (x,y)에 퀸을 배치할 수 있는지  조사 : 앞의 함수들을 호출하는 것
-	public static boolean checkMove(int[][] d, int x, int y) {// (x,y)로 이동 가능한지를 check
+	public static boolean checkMove(int[][] d, int x, int y) {
 		if (checkRow(d, x) && checkCol(d, y) && checkDiagSW(d, x, y) && checkDiagSE(d, x, y))
 			return true;
 		return false;
 	}
 	
 	//배열 d에서 현재 위치(row,col)에 대하여 다음에 이동할 위치 nextCol을 반환, 이동이 가능하지 않으면 -1를 리턴 : checkMove를 호출
-	public static int nextMove(int[][] d, int row, int col) {// 현재 row, col에 대하여 이동할 col을 return
+	public static int nextMove(int[][] d, int row, int col) {
 		for(int i=col; i<d[row].length; i++) {
 			if(checkMove(d, row, i)) return i;
 		}
@@ -179,13 +179,8 @@ public class train_QueenEight_구현실습과제 {
 	}
 	
 	public static void main(String[] args) {
-		int row = 8, col = 8;
-		int[][] data = new int[row][col];
-		
-		// 체스판 초기화
-		for (int i = 0; i < data.length; i++)
-			for (int j = 0; j < data[0].length; j++)
-				data[i][j] = 0;
+		int N = 8;
+		int[][] data = new int[N][N]; // 요소는 전부 0으로 초기화 되어 있음.
 	
 		EightQueen(data);
 	
