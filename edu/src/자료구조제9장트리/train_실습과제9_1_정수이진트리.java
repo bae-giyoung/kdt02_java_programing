@@ -195,7 +195,9 @@ class Tree5 {
 	}
 
 	boolean isLeafNode(TreeNode5 current) {//current 가 leaf node 인지 조사 
-
+		if(current.LeftChild == null & current.RightChild == null)
+			return true;
+		return false;
 	}
 
 	void inorder() {//main에서 호출되는 driver function
@@ -216,6 +218,7 @@ class Tree5 {
 	 * postorder: Tl - Tr - x 순서로 방문
 	 */
 	//workhorse 동력
+	//스택을 이용한 non-recursive외에도 밑으 inorder과 preorder 재귀함수 사용해서 recursive로도 풀어보기!
 	void inorder(TreeNode5 CurrentNode) {//inorder traversal을 구현하는 recursive function - workhorse라고 부름
 		if (CurrentNode != null) {
 			inorder(CurrentNode.LeftChild); // L 방문
@@ -304,6 +307,41 @@ class Tree5 {
 		//삭제 대상이 leaf node인 경우, non-leaf node로 구분하여 구현한다 
 		TreeNode5 p = root, q = null, parent = null;
 		int branchMode = 0; // 1은 left, 2는 right
+		while(p!=null) {
+			if(num>p.data) {
+				q=p;
+				p=p.RightChild;
+				branchMode = 1;
+			}
+			else if(num<p.data) {
+				q=p;
+				p=p.LeftChild;
+				branchMode = 2;
+			}
+			else { // 삭제할 값
+				//삭제
+				if(isLeafNode(p)) {
+					if(branchMode == 1)
+						q.LeftChild = null;
+					if(branchMode == 2)
+						q.RightChild = null;
+				}
+				else {
+					if(isOneChild(p)) {
+						
+					}
+					else {
+						// child가 2개인 경우
+						// inorder successor를 구하여 replace한다.
+						TreeNode5 succ = inorderSucc(p);
+						p.data = succ.data;
+						//delete(succ); 이게 싫으면 parent를 알아야 한다?
+						//recursive 또는 non-recursive 삭제
+						//non-recursive 삭제에는 p, q를 사용하는 것이 좋다.
+					}
+				}
+			}
+		}
 		
 		return false;
 
