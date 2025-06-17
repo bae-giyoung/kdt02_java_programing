@@ -9,8 +9,6 @@ package 자료구조제5장재귀알고리즘.test;
 
 import java.util.Stack;
 
-//23.2.16 수정
-//23.2.24: 객체 배열 초기화, static 사용, 내부 클래스와 외부 클래스 사용 구분을 못하는 문제 => 선행 학습 필요
 enum Directions {N, NE, E, SE, S, SW, W, NW}
 class Items {
 	private int x;
@@ -68,15 +66,15 @@ class Offsets {
 
 public class train_실습_미로찾기실습과제 {
 
-	static Offsets[] moves = new Offsets[8];//static을 선언하는 이유를 알아야 한다
+	static Offsets[] moves = new Offsets[8];
 	int[][] maze = new int[14][17];
 	int[][] mark = new int[14][17];
 
-	static void path(int[][] maze, int[][] mark, int m, int p) {//m = 12, p = 15
+	static void path(int[][] maze, int[][] mark, int m, int p) {//m = 출구행위치, p = 출구열위치
 		
 		// 출발점
 		Stack<Items> stk = new Stack<Items>();
-		stk.push(new Items(1, 1, 2)); // 다음 위치를 E부터 탐색 시작
+		stk.push(new Items(1, 1, 2)); // 다음 위치를 dir부터 탐색 시작
 		maze[1][1] = 2;
 		mark[1][1] = 1;
 		
@@ -161,7 +159,7 @@ public class train_실습_미로찾기실습과제 {
 				{ 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 },
 				{ 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 }};
 		
-		for (int ia = 0; ia < 8; ia++)
+		for (int ia = 0; ia < moves.length; ia++)
 			moves[ia] = new Offsets(0, 0);
 		
 		moves[0].setA(-1);		moves[0].setB(0); // N
@@ -172,14 +170,11 @@ public class train_실습_미로찾기실습과제 {
 		moves[5].setA(1);		moves[5].setB(-1); // SW
 		moves[6].setA(0);		moves[6].setB(-1); // W
 		moves[7].setA(-1);		moves[7].setB(-1); // NW
-		//Directions d;
-		//d = Directions.N;
-		//d = d + 1;//java는 지원안됨
 		
 		// 확장된 미로 만들기: input[][]을 maze[][]로 복사
 		for (int i=0; i < maze.length; i++) {
 			for (int j=0; j < maze[i].length; j++) {
-				if(i==0 || i==maze.length-1 || j==0 || j==maze[i].length-1) // 왼쪽 오른쪽 울타리
+				if(i==0 || i==maze.length-1 || j==0 || j==maze[i].length-1) // 바깥 울타리
 					maze[i][j] = 1;
 				else // 안쪽 미로
 					maze[i][j] = input[i-1][j-1];
