@@ -18,7 +18,7 @@ public class QueryExecuteUpdateDelete {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirstdb");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirstdb","root","tiger");
 			
 			String sql1 = "delete from phonebook where id=?";
 			psmt = con.prepareStatement(sql1);

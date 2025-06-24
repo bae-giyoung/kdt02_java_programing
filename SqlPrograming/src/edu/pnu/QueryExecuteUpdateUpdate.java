@@ -28,7 +28,7 @@ public class QueryExecuteUpdateUpdate {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirstdb");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirstdb","root","tiger");
 			
 			String sql1 = "update phonebook set ";
 			String sql2 = "update phonebook set home=? where id=?";
