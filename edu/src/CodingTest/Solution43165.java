@@ -32,12 +32,6 @@ numbers	target	return
 총 2가지 방법이 있으므로, 2를 return 합니다.
 */
 
-//class Solution {
-//    public int solution(int[] numbers, int target) {
-//        int answer = 0;
-//        return answer;
-//    }
-//}
 
 // DFS 문제
 // 재귀버전
