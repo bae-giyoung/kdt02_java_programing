@@ -22,13 +22,27 @@ class LinkedList11 {
 		first = null;
 	}
 
-	public boolean Delete(int element) //전달된 element 값이 존재 하면 삭제하고 true로 리턴
+	public boolean Delete(int element) //전달된 element 값이 존재 하면 삭제하고 true로 리턴 -> 중복된 값이 있다면 같은 데이터를 가진 노드 중 첫 번째만 삭제한다고 가정했음.
 	{
 		Node11 q, current = first;
 		q = current;
 		while (current != null) {
-			//구현 
-
+			
+			if(current.data == element) {
+				// 삭제할 노드가 첫 번째 노드일 때
+				if(current == first)
+					first = current.link;
+				// 삭제할 노드가 마지막 노드 때
+				else if(current.link == null)
+					q.link = null;
+				else
+					q.link = current.link;
+				
+				return true;
+			}
+			
+			q = current;
+			current = current.link;
 		}
 		return false;// 삭제할 대상이 없다.
 	}
@@ -37,7 +51,9 @@ class LinkedList11 {
 		Node11 p = first;
 		int num = 0;
 		while (p != null) {
-			//구현 
+			num++;
+			System.out.println(num+ ": " +p.data);
+			p = p.link;
 		}
 		System.out.println();
 	}
@@ -53,14 +69,33 @@ class LinkedList11 {
 		// 기존 노드들이 있으면 순서가 유지하도록 삽입할 노드 위치를 찾는다
 		Node11 p = first, q = null;
 		while (p != null) {
-			//구현
+			
+			if(newNode.data < p.data) {
+				if(p == first) {
+					first = newNode;
+				} else {
+					q.link = newNode;
+				}
+				newNode.link = p;
+				return;
+			}
+			
+			if (newNode.data >= p.data && p.link == null) {
+				p.link = newNode;
+				return;
+			}
+			
+			q = p;
+			p = p.link;
 		}
 	}
 
 	public boolean Search(int data) { //전달된 data 값을 찾아 존재하면 true로 리턴, 없으면 false로 리턴
 		Node11 ptr = first;
 		while (ptr != null) {
-			//구현
+			if(ptr.data == data)
+				return true;
+			ptr = ptr.link;
 		}
 		return false;
 	}
@@ -72,15 +107,34 @@ class LinkedList11 {
 		 * a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
 		 */
 		Node11 p = first, q = b.first;
-		Node11 temp = null;
+		Node11 temp = null; // 병합 진행 커서
+
 		if(q.data < p.data) { //시작 노드 결정 
+			temp = q;
+			first = q;
+			q = q.link;
+		} else {
 			temp = first;
-			first = b.first;
-			b.first = temp;
+			p = p.link;
 		}
+		
 		while (p != null && q != null) {
-			//구현
+			if(p.data <= q.data) {
+				temp.link = p;
+				p = p.link;
+			} else {
+				temp.link = q;
+				q = q.link;
+			}
+			temp = temp.link;
 		}
+		
+		if(p != null) // 남은 것들 병함
+			temp.link = p;
+		else
+			temp.link = q;
+		
+		b.first = null; // b 변형되어서 지워줌
 	}
 }
 public class 실습8_1_0정수연결리스트_구현실습 {

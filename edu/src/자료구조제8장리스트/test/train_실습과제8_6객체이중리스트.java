@@ -1,5 +1,5 @@
 
-package Chap8_List;
+package 자료구조제8장리스트.test;
 /*
  * 정수 리스트 > 객체 리스트 >
  * * 헤드 노드가 있는 원형 리스트, 헤드 노드가 없는 원형 리스트 구현
@@ -78,7 +78,7 @@ class DoubledLinkedList2 {
 	// --- 생성자(constructor) ---//
 	public DoubledLinkedList2() {
 		first = new Node4(); // dummy(first) 노드를 생성
-
+		first.rlink = first.llink = first;
 	}
 
 	// --- 리스트가 비어있는가? ---//
@@ -88,36 +88,145 @@ class DoubledLinkedList2 {
 
 	// --- 노드를 검색 ---//
 	public boolean search(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
-
+		Node4 p = first.rlink;
+		
+		if(p == first) {
+			System.out.println("리스트가 비어있습니다.");
+			return false;
+		}
+		
+		while(p != first) {
+			if(c.compare(p.data, obj) == 0)
+				return true;
+			p = p.rlink;
+		}
+		
+		return false;
 	}
 
 	// --- 전체 노드 표시 ---//
 	public void show() {
-
+		Node4 p = first.rlink;
+		
+		if(p == first) {
+			System.out.println("리스트가 비어있습니다.");
+			return;
+		}
+		
+		while(p != first) {
+			System.out.println("("+ p.data.no + ") " + p.data.name);
+			p = p.rlink;
+		}
 	}
 
 	// --- 올림차순으로 정렬이 되도록 insert ---//
 	public void add(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
-
+		Node4 p = first.rlink;
+		Node4 newNode = new Node4();
+		newNode.data = obj;
+		
+		if(p == first) {
+			first.rlink = first.llink = newNode;
+			newNode.llink = newNode.rlink = first;
+			return;
+		}
+		
+		while(p != first) {
+			System.out.println(p.data);
+			if (c.compare(p.data, newNode.data) > 0) {
+				newNode.llink = p.llink;
+				p.llink.rlink = p.llink = newNode;
+				newNode.rlink = p;
+				return;
+			} else if (c.compare(p.data, newNode.data) <= 0 && p.rlink == first) {
+				p.rlink = first.llink = newNode;
+				newNode.llink = p;
+				newNode.rlink = first;
+				return;
+			}
+			
+			p = p.rlink;
+		}
 
 	}
 
 	// --- list에 삭제할 데이터가 있으면 해당 노드를 삭제 ---//
 	public void delete(SimpleObject2 obj, Comparator<? super SimpleObject2> c) {
-
+		Node4 p = first.rlink;
+		
+		if(p == first) {
+			System.out.println("리스트가 비어있습니다.");
+			return;
+		}
+		
+		while(p != first) {
+			if (c.compare(p.data, obj) == 0) {
+				p.rlink.llink = p.llink;
+				p.llink.rlink = p.rlink;
+				System.out.println("삭제 성공: " + p.data.no);
+				return;
+			}
+			
+			p = p.rlink;
+		}
+		
+		System.out.println("삭제 실패: 해당 데이터가 존재하지 않습니다.");
 	}
+	
 	public DoubledLinkedList2 merge_NewList(DoubledLinkedList2 lst2, Comparator<SimpleObject2> cc) {
 		//l3 = l1.merge(l2); 실행하도록 리턴 값이 리스트임 
 		//l.add(객체)를 사용하여 구현
 		//기존 리스트의 노드를 변경하지 않고 새로운 리스트의 노드들을 생성하여 구현 
 		DoubledLinkedList2 lst3 = new DoubledLinkedList2();
 		Node4 ai = this.first.rlink, bi = lst2.first.rlink;
+		Node4 p = lst3.first;
+		
+		while (ai != first && bi != lst2.first) {
+			Node4 newNode = new Node4();
+			SimpleObject2 data;
+			
+			if(cc.compare(ai.data, bi.data) <= 0) {
+				data = ai.data;
+				ai = ai.rlink;
+			} else {
+				data = bi.data;
+				bi = bi.rlink;
+			}
+			newNode.data = data;
+			
+			newNode.llink = p;
+			p.rlink = newNode;
+			
+			p = p.rlink;
+		}
+		
+		while(ai != this.first) {
+			Node4 newNode = new Node4();
+			newNode.data = ai.data;
+			
+			newNode.llink = p;
+			p.rlink = newNode;
+			
+			p = p.rlink;
+			ai = ai.rlink;
+		}
+		
+		while(bi != lst2.first) {
+			Node4 newNode = new Node4();
+			newNode.data = bi.data;
+			
+			newNode.llink = p;
+			p.rlink = newNode;
+			
+			p = p.rlink;
+			bi = bi.rlink;
+		}
 
-
-
+		p.rlink = lst3.first;
+		lst3.first.llink = p;
 		return lst3;
-
 	}
+	
 	void merge_InPlace(DoubledLinkedList2 b, Comparator<SimpleObject2> cc) {
 		/*
 		 * 연결리스트 a,b에 대하여 a = a + b
@@ -126,8 +235,52 @@ class DoubledLinkedList2 {
 		 * 회원번호에 대하여 a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
 		 */
 		Node4 p = first.rlink, q = b.first.rlink;
-		Node4 temp = null;
-
+		Node4 temp = first;
+		Node4 head = first;
+		
+		if(p == first) {
+			first.rlink = q;
+			first.llink = b.first.llink;
+			q.llink = first;
+			b.first.llink.rlink = first;
+			b.first.llink = b.first.rlink = b.first; // 리스트 초기화
+			return;
+		}
+		if(q == b.first) {
+			return;
+		}
+		
+		while (p != first && q != b.first) {
+			if(cc.compare(p.data, q.data) <= 0) { // 각 리스트가 비어있지 않음
+				temp.rlink = p;
+				p.llink = temp;
+				p = p.rlink;
+			} else {
+				temp.rlink = q;
+				q.llink = temp;
+				q = q.rlink;
+			}
+			temp = temp.rlink;
+		}
+		
+		while (p != first) {// 남은 리스트 병합
+			temp.rlink = p;
+			p.llink = temp;
+			p = p.rlink;
+			temp = temp.rlink;
+		}
+		
+		while (q != b.first) {
+			temp.rlink = q;
+			q.llink = temp;
+			q = q.rlink;
+			temp = temp.rlink;
+		}
+		
+		temp.rlink = head;
+		head.llink = temp;
+		
+		b.first.llink = b.first.rlink = b.first; // b 빈 리스트로
 
 	}
 }
@@ -227,11 +380,11 @@ public class train_실습과제8_6객체이중리스트 {
 				lst3.show();	
 				break;
 			case Merge_InPlace:
-//				for (int i = 0; i < count; i++) {//3개의 객체를 연속으로 입력받아 l2 객체를 만든다 
-//					so = new SimpleObject2();
-//					so.scanData("병합", 3);
-//					lst4.add(so, SimpleObject2.NO_ORDER );				
-//				}
+				for (int i = 0; i < count; i++) {//3개의 객체를 연속으로 입력받아 l2 객체를 만든다 
+					so = new SimpleObject2();
+					so.scanData("병합", 3);
+					lst2.add(so, SimpleObject2.NO_ORDER );				
+				}
 				SimpleObject2 [] simpleobjects3 = new SimpleObject2[10];
 				makeSimpleObjects3(simpleobjects3);
 				for (int i = 0; i < simpleobjects3.length;i++)
@@ -240,7 +393,7 @@ public class train_실습과제8_6객체이중리스트 {
 				lst2.show();
 				System.out.println("리스트 lst4::");
 				lst4.show();
-				lst4.merge_NewList(lst2, SimpleObject2.NO_ORDER);
+				lst4.merge_InPlace(lst2, SimpleObject2.NO_ORDER);
 				//merge 실행후 show로 결과 확인 - 새로운 노드를 만들지 않고 합병 - 난이도 상
 				System.out.println("병합 리스트 lst4::");
 				lst4.show();
