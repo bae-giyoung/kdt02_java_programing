@@ -1,4 +1,4 @@
-package Chap11_그래프;
+package 자료구조제11장그래프.test;
 
 import java.util.*;
 

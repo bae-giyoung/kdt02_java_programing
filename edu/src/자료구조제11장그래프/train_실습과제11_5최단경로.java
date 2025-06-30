@@ -1,98 +1,95 @@
-package 자료구조제11장그래프.test;
-//최단거리 (heap 사용)
-//- 1. Node 객체를 생성(vertex, distance)
-//- 최소 거리 비교를 위해서 coparator 등을 활용
-//- 2. PriorityQueue<Node>
-//public void shortestPath(int startNode) {
-// Arrays.fill(s, false);
-// Arrays.fill(dist, MAX_WEIGHT);
-// PriorityQueue<Node> pq = new PriorityQueue<>();
-// s[startNode] = true;
-// pq.offer(new Node(startNode, 0);
-//
-// while(!pq.isEmpty()) {
-//	// 1. 거리가 가장 짧은 노드 선택
-//	// 2. 이미 선택된 노드이면 제외
-//	// 3. 선택되지 않은 노드이면 방문 처리
-//	// 4. 인접한 모든 노드에 대해서 거리 갱신
-//	// 4-1. 더 짧은 거리를 발견하면 heap에 추가
-// }
-// printDistantces(startNode);
-//}
+package 자료구조제11장그래프;
+// 교수님 풀이
 import java.util.Arrays;
 import java.util.Scanner;
 
+// 최단거리
+// 1. 벨만포드
+// 2. 다익스트라
+// 3. 무방향
+// 4. 행렬
 class Graph5 {
+	//최단거리에 사용되는 자료구조
     private static final int NMAX = 10;
     private static final int MAX_WEIGHT = 999999;
 
-    private int[][] length = new int[NMAX][NMAX];
-    private int[] dist = new int[NMAX];
-    private boolean[] s = new boolean[NMAX]; // 방문했는지 저장하는 배열
+    private int[][] length = new int[NMAX][NMAX]; // 10*10 > 노드 10개 짜리
+    private int[] dist = new int[NMAX]; // 거리의 기본값이 최단거리=>최대값
+    private boolean[] s = new boolean[NMAX];
     private final int n;
     
+    // 생성자의 기본 => 필드 초기화
     public Graph5(int nodeSize) {
     	this.n = nodeSize;
+    	// 그래프 초기화 > 그래프를 초기화 하는것이 가장 중요하다!
     	for(int i=0; i<n; i++) {
     		Arrays.fill(length[i], MAX_WEIGHT);
     		length[i][i] = 0;
     	}
     }
 
+    // 간선 추가
     public void insertEdge(int start, int end, int weight) {
-    	length[start][end] = weight; // A-C 인접행렬의 우상삼각
-    	//length[end][start] = weight; // C-A
+    	length[start][end] = weight; // 문제가 무방향 그래프라 우상삼각형만 쓰면 됨
+    	// length[end][start] = weight; // 아니라면 좌우 연결 다 해야함!
     }
 
     public void displayConnectionMatrix() {
-    	for(int i=0; i<n; i++) {
-    		for(int j=0; j<n; j++) {
-    			if(length[i][j] == MAX_WEIGHT)
+    	for(int i = 0; i < n; i++) {
+    		for(int j = 0; j < n; j++) {
+    			if(length[i][j] == MAX_WEIGHT) {
     				System.out.print("∞ ");
-    			else
+    			} else {
     				System.out.print(length[i][j] + " ");
+    			}
     		}
     		System.out.println();
     	}
     }
 
     public boolean isNonNegativeEdgeCost() {
-    	for(int i=0; i<n; i++) {
-    		for(int j=0; j<n; j++) {
-    			if(length[i][j] < 0)
+    	for(int i = 0; i < n; i++) {
+    		for(int j = 0; j < n; j++) {
+    			// 음수 찾았음 => false
+    			if (length[i][j] != MAX_WEIGHT && length[i][j] < 0) {
     				return false;
+    			}
     		}
     	}
     	return true;
     }
 
     public void shortestPath(int startNode) {
-        Arrays.fill(s, false); // 필드 초기화 시 boolean[]의 모든 요소 false로 될 텐데 또 써주는 이유는, 함수 여러번 호출할 때 초기화를 위함?
+        Arrays.fill(s, false);
         for (int i = 0; i < n; i++) {
-            dist[i] = length[startNode][i]; // 인접행렬에서 startNode와 연관된 것만 떼어 옴 
+            dist[i] = length[startNode][i]; // 특정 노드에서 연결된 정점의 모든 디스턴스(비용)를 저장
         }
         s[startNode] = true;
         dist[startNode] = 0;
 
+        // 최단 거리 전역 탐색
         for (int i = 0; i < n - 1; i++) {
-        	// 가장 작은 값 가져오기 choose
-        	int u = choose();
-        	// 방문 기록 남기기 s
-        	s[u] = true;
+        	// 가장 작은 값을 가져와야 함(choose)
+        	// 방문기록 남김 s[인덱스] = true
         	// 최단거리를 합산해서 기록
-        	int d = 0;
-        	d += dist[u];
+        	int u = choose();
+        	s[u] = true;
+        	for(int j=0; j<n; j++) { // 누적 합계
+        		//if(!s[j] && dist[i] + length[u][j] < dist[j]) {
+        		if(!s[j] && dist[u] + length[u][j] < dist[j]) {
+        			dist[j] = dist[u] + length[u][j];
+        		}
+        	}
         }
         printDistances(startNode);
     }
 
-    private int choose() {
+    private int choose() { // min max heap
         int minDist = MAX_WEIGHT;
         int minPos = -1;
-        
-        // 가중치 가장 작은 것 구하기
+        // 포지션: 최소값의 인덱스 반환
         for(int i=0; i<n; i++) {
-        	if(dist[i] < minDist && !s[i]) {
+        	if(!s[i] && dist[i] < minDist) {
         		minDist = dist[i];
         		minPos = i;
         	}
@@ -109,7 +106,6 @@ class Graph5 {
         System.out.println();
     }
 }
-
 public class train_실습과제11_5최단경로 {
 	static void showMatrix(int[][] m) {
 		System.out.println("Adjacency matrix:");

@@ -1,4 +1,4 @@
-package Chap9_Tree;
+package 자료구조제9장트리.test;
 /*
  * 집합 트리
  * 집합 원소를 제거하는 delete() 추가, 집합 세트를 출력하는 displaySets()를 추가함
