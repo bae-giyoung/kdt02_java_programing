@@ -1,4 +1,4 @@
-// 제너럴 타입으로 변경 + 교수님 풀이 기반
+// 제너럴 타입으로 변경 + 교수님 풀이 기반 다시 풀기
 package 자료구조제8장리스트.test;
 /*
  * 정수 리스트 > 객체 리스트 >
@@ -10,11 +10,11 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 class SimpleObject20 {
-	static final int NO = 1; // 번호를 읽어 들일까요?
-	static final int NAME = 2; // 이름을 읽어 들일까요?
+	static final int NO = 1;
+	static final int NAME = 2;
 	String no; // 회원번호
 	String name; // 이름
-	String expire;//  유효기간 필드를 추가
+	String expire;// 유효기간
 
 	public SimpleObject20(String sno, String sname, String expire) {
 		this.no = sno;
@@ -65,44 +65,53 @@ class SimpleObject20 {
 	}
 }
 
-class Node<T> { // 트리는 다양한 타입이 오기 때문에 <T>로 변경
+class Node<T> {
 	private T data; // 데이터
 	private Node<T> prev; // 좌측포인터(앞쪽 노드에 대한 참조)
 	private Node<T> next; // 우측포인터(뒤쪽 노드에 대한 참조)
 	
 	public Node(T obj) {
 		this.data = obj;
-		//this.prev = null; // 인스턴스 생성 시에 초기화 되니? 빼는 게 맞나?
-		//this.next = null;
+		//this.prev = null; this.next = null; // 인스턴스 생성 시에 초기화 되니? 빼는 게 맞나?
 	}
 	
 	public T getData() {
 		return data;
 	}
+	
 	public void setData(T data) {
 		this.data = data;
 	}
+	
 	public Node<T> getPrev() {
 		return prev;
 	}
+	
 	public void setPrev(Node<T> prev) {
 		this.prev = prev;
 	}
+	
 	public Node<T> getNext() {
 		return next;
 	}
+	
 	public void setNext(Node<T> next) {
 		this.next = next;
+	}
+	
+	@Override
+	public String toString() {
+		return "" + data;
 	}
 }
 
 class DoubledLinkedList<T> {
-	private final Node<T> head; // 머리 포인터(참조하는 곳은 더미노드) dummy node!!!!!
+	private final Node<T> head; // 머리 포인터(참조하는 곳은 더미노드)
 	private int size;
 
 	// --- 생성자(constructor) ---//
 	public DoubledLinkedList() {
-		head = new Node<T>(null); // dummy(first) 노드를 생성
+		head = new Node<T>(null);
 		head.setPrev(head);
 		head.setNext(head);
 	}
@@ -126,12 +135,12 @@ class DoubledLinkedList<T> {
 		
 		while(current != head) {
 			if(c.compare(obj, current.getData()) == 0) {
-				System.out.println("데이터 존재: " + obj);
+				System.out.println("데이터 존재: " + current);
 				return true;
 			}
 			current = current.getNext();
 		}
-		System.out.println("데이터가 존재하지 않습니다: " + obj);
+		System.out.println("데이터가 존재하지 않습니다: ");
 		return false;
 	}
 
@@ -145,36 +154,37 @@ class DoubledLinkedList<T> {
 		}
 		
 		while(current != head) {
-			System.out.println(current.getData()); // 제너럴 타입이지만 저장하는 객체의 클래스에 toString 오버로딩 되어 있다고 생각!
+			System.out.println(current.getData());
 			current = current.getNext();
 		}
 	}
 
 	// --- 올림차순으로 정렬이 되도록 insert ---//
-	public void add(T obj, Comparator<? super T> c) {
+	public void add(T obj, Comparator<? super T> c) { // 회원 번호가 같으면 추가하지 못하게 해야 하지 않을까?
 		Node<T> newNode = new Node<>(obj);
 		Node<T> current = head.getNext();
-		System.out.println("2");
 		
-		while(current != head) {
-			if(c.compare(current.getData(), newNode.getData()) > 0) {// current의 data가 더 큰 지점까지 찾음
-				current = current.getNext();
-			}
+		while(current != head && c.compare(current.getData(), newNode.getData()) < 0) {// current의 data가 더 큰 지점까지 또는 더 큰 데이터가 없는 지점(첫 번째 삽입, 마지막 삽입)까지 찾음
+			current = current.getNext();
 		}
-		// 더 큰 data를 가진 current를 기준으로 앞에 삽입 > current가 head인 경우 > 첫번째 삽입 문제 없음 > 마지막 위치의 삽입일 경우 current==head
+		
+		// 더 큰 data를 가진 current를 기준으로 앞에 삽입 > current가 head인 경우(첫번째에 삽입하거나 마지막에 삽입하는 경우)도 똑같음!
 		newNode.setPrev(current.getPrev()); // 항상 참조를 끊기 전에 새로운 저장소(삽입하는 것의 필드)에 먼저 저장하자!
 		newNode.setNext(current);
 		current.getPrev().setNext(newNode);
 		current.setPrev(newNode);
 		size++;
-		System.out.println("3, "+ size+", "+newNode+", "+head.getNext());
 	}
 	
-	// add 오버로딩
+	// add 오버로딩 -> 사용하려면 Comparable, Comparator에 대해 정확히 알아야 함! -> obj에 compareTo()를 구현해야 하는데 비교해야 하는 기준이 필드값이 NO 또는 NAME 두 가지이고, 제너럴 타입이라 어떻게 해야할 지 모르겠어서 완성 안함
 	public void add(T obj) {
-		@SuppressWarnings("unchecked")
-		Comparable<T> comparableObject = (Comparable<T>) obj; // Comparable과 Comparator에 대해서
-		this.add(obj, (a, b) -> comparableObject.compareTo(b)); // comparableObject가 람다식의 a인자가 되는 것에 대해서
+		if (obj instanceof Comparable) {
+			@SuppressWarnings("unchecked")
+			Comparable<T> comparableObject = (Comparable<T>) obj; // 다형성
+			this.add(obj, (a, b) -> comparableObject.compareTo(b));
+		} else {
+			System.out.println("Comparable 객체가 아닙니다. add(T obj, Comparator<? super T> c) 메서드를 사용해서 삽입하세요.");
+		}
 	}
 
 	// --- list에 삭제할 데이터가 있으면 해당 노드를 삭제 ---//
@@ -185,61 +195,69 @@ class DoubledLinkedList<T> {
 			if(c.compare(current.getData(), obj) == 0) {
 				current.getPrev().setNext(current.getNext());
 				current.getNext().setPrev(current.getPrev());
-				System.out.println("삭제 성공: " + obj);
+				System.out.println("삭제 성공: " + current);
 				return;
 			}
 			current = current.getNext();
 		}
-		System.out.println("삭제 실패: 해당 데이터가 존재하지 않습니다, " + obj);
+		System.out.println("삭제 실패: 해당 데이터가 존재하지 않습니다");
 	}
 	
+	
 	public DoubledLinkedList<T> mergeNewList(DoubledLinkedList<T> lst2, Comparator<? super T> cc) {
-		//l3 = l1.merge(l2); 실행하도록 리턴 값이 리스트임 
-		//l.add(객체)를 사용하여 구현
-		//기존 리스트의 노드를 변경하지 않고 새로운 리스트의 노드들을 생성하여 구현 
+		
 		DoubledLinkedList<T> lst3 = new DoubledLinkedList<T>();
 		Node<T> ai = this.head.getNext(), bi = lst2.getHead().getNext();
 		
 		while(ai != this.head && bi != lst2.getHead()) {
-			// ai가 작거나 같은 경우 > ai 삽입, ai 커서 옮기기
-			if(cc.compare(ai.getData(), bi.getData()) <= 0) {
-				lst3.add(ai.getData());
+			if(cc.compare(ai.getData(), bi.getData()) <= 0) {// ai가 작거나 같은 경우 -> ai 삽입, ai 커서 옮기기
+				lst3.add(ai.getData(), cc);
 				ai = ai.getNext();
 			}
-			// bi가 작은 경우 > bi 삽입, bi 커서 옮기기
-			else {
-				lst3.add(bi.getData());
+			else {// bi가 작은 경우 -> bi 삽입, bi 커서 옮기기
+				lst3.add(bi.getData(), cc);
 				bi = bi.getNext();
 			}
 		}
 		
 		// 남은것 이어 붙이기
 		while(ai != this.head) {
-			lst3.add(ai.getData());
+			lst3.add(ai.getData(), cc);
 			ai = ai.getNext();
 		}
 		while(bi != lst2.getHead()) {
-			lst3.add(bi.getData());
+			lst3.add(bi.getData(), cc);
 			bi = bi.getNext();
 		}
 		
-		// 마지막으로  원형 리스트 연결이 잘 되어있는지 확인하기! > add에서 잘 구현한 것 같은데
-		
-		// 원본 리스트들은 보존됨
+		// 원본 리스트들은 변경 없이 보존됨!
 		return lst3;
 	}
 	
+	
 	void mergeInPlace(DoubledLinkedList<T> b, Comparator<? super T> cc) {
-		/*
-		 * 연결리스트 a,b에 대하여 a = a + b
-		 * merge하는 알고리즘 구현으로 in-place 방식으로 합병/이것은 새로운 노드를 만들지 않고 합병하는 알고리즘 구현
-		 * 난이도 등급: 최상급
-		 * 회원번호에 대하여 a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
-		 */
-		Node4 p = first.rlink, q = b.first.rlink;
-		Node4 temp = null;
 		
-
+		Node<T> p = this.head.getNext(), q = b.getHead().getNext();
+		
+		while(p != this.head && q != b.getHead()) {
+			// p < q -> p 커서만 옮기기
+			if(cc.compare(p.getData(), q.getData()) < 0) {
+				p = p.getNext();
+			} else {
+			// q < p -> q 삽입, q 커서 옮기기
+				this.add(q.getData(), cc);
+				q = q.getNext();
+			}
+		}
+		
+		// 남은 것 이어붙이기
+		while(q != b.getHead()) {
+			this.add(q.getData(), cc);
+			q = q.getNext();
+		}
+		
+		// 기존 원본 변경됨
+		// b는 변경되지 않은 원본 그대로 놔두기
 	}
 }
 
