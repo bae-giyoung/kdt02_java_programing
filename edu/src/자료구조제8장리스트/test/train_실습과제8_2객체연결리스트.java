@@ -1,4 +1,4 @@
-package Chap8_List;
+package 자료구조제8장리스트.test;
 /*
  * 정수 리스트 > 객체 리스트: 2번째 실습 대상
  */
@@ -54,10 +54,10 @@ class SimpleObject5 {
 		}
 	}
 }
-class Node2 {
-	SimpleObject5 data;
+class Node2<T> {
+	T data;
 	Node2 link;
-	public Node2(SimpleObject5 element) {
+	public Node2(T element) {
 		data = element;
 		link = null;
 	}
