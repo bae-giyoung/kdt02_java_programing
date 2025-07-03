@@ -27,20 +27,20 @@ class Graph5 {
     private static final int MAX_WEIGHT = 999999;
 
     private int[][] length = new int[NMAX][NMAX];
-    private int[] dist = new int[NMAX];
+    private int[] dist = new int[NMAX]; // 각 노드
     private boolean[] s = new boolean[NMAX]; // 방문했는지 저장하는 배열
     private final int n;
     
     public Graph5(int nodeSize) {
     	this.n = nodeSize;
     	for(int i=0; i<n; i++) {
-    		Arrays.fill(length[i], MAX_WEIGHT);
-    		length[i][i] = 0;
+    		Arrays.fill(length[i], MAX_WEIGHT); // 행렬의 모든 원소를 max_weight로 초기화
+    		length[i][i] = 0; // 자기 자신과의 연결, 주대각선은 0으로 초기화 
     	}
     }
 
-    public void insertEdge(int start, int end, int weight) {
-    	length[start][end] = weight; // A-C 인접행렬의 우상삼각
+    public void insertEdge(int start, int end, int weight) { // 거리 비용을 값으로 가지는 간선!
+    	length[start][end] = weight; // A(행)-C(열), 인접행렬의 우상삼각, 방향 그래프
     	//length[end][start] = weight; // C-A
     }
 
@@ -67,21 +67,25 @@ class Graph5 {
     }
 
     public void shortestPath(int startNode) {
-        Arrays.fill(s, false); // 필드 초기화 시 boolean[]의 모든 요소 false로 될 텐데 또 써주는 이유는, 함수 여러번 호출할 때 초기화를 위함?
+    	// 초기화
+        Arrays.fill(s, false); // 함수 여러번 호출할 때 초기화를 위함
         for (int i = 0; i < n; i++) {
-            dist[i] = length[startNode][i]; // 인접행렬에서 startNode와 연관된 것만 떼어 옴 
+            dist[i] = length[startNode][i]; // 인접행렬에서 startNode의 행만 떼어 옴
         }
-        s[startNode] = true;
+        s[startNode] = true; // 자기 자신과의 거리, 방문 여부 설정
         dist[startNode] = 0;
 
-        for (int i = 0; i < n - 1; i++) {
-        	// 가장 작은 값 가져오기 choose
+        // startNode에서 각 노드까지의 최단거리 계산
+        for (int i = 0; i < n - 1; i++) { // i는 의미 없고, 횟수만 의미 있음, 자기 자신을 제외한 각 노드의 개수만큼 순회
+        	// 방문한 적 없는 가장 작은 값을 가져오고, 방문 기록 남기기, 가장 작은 값이니 여기서는 값 업데이트 필요 없음
         	int u = choose();
-        	// 방문 기록 남기기 s
         	s[u] = true;
-        	// 최단거리를 합산해서 기록
-        	int d = 0;
-        	d += dist[u];
+        	// 최단거리를 합산해서 기록, 업데이트
+        	for(int j=0; j < n; j++) { // 여기서 j는 의미가 있음. 인덱스값으로 사용
+        		if(!s[j] && length[u][j] + dist[u] < dist[j]) {// u=1, j=2, 
+        			dist[j] = length[u][j] + dist[u];
+        		}
+        	}
         }
         printDistances(startNode);
     }
@@ -92,7 +96,7 @@ class Graph5 {
         
         // 가중치 가장 작은 것 구하기
         for(int i=0; i<n; i++) {
-        	if(dist[i] < minDist && !s[i]) {
+        	if(!s[i] && dist[i] < minDist) {
         		minDist = dist[i];
         		minPos = i;
         	}
