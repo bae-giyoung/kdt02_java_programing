@@ -1,8 +1,12 @@
 package 자료구조제11장그래프.test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.TreeSet;
 
-class Edge3 implements Comparable<Edge3> {
+class Edge3 implements Comparable<Edge3> { // 정점과 간선의 데이터
     int src;
     int dest;
     int weight;
@@ -14,67 +18,89 @@ class Edge3 implements Comparable<Edge3> {
     }
 
     @Override
-    public String toString() {
+	public String toString() {
+		return "Edge3 [src=" + src + ", dest=" + dest + ", weight=" + weight + "]";
+	}
 
-    }
-
-    @Override
-    public int compareTo(Edge3 e) {
-
-    }
-}
-
-class Graph_MST {
-    int n; // Number of nodes
-    LinkedList<Edge3>[] adjacencyList;
-
-    public Graph_MST(int n) {
-
-    }
-
-    public void insertEdge3(int src, int dest, int weight) {
-
-    }
-
-    public void displayAdjacencyLists() {
-
+	@Override
+    public int compareTo(Edge3 e) { // 가장 중요!
+    	return Integer.compare(this.weight, e.weight);
     }
 }
 
-class Sets {
-    int[] parent;
+//class Graph_MST { // 인접 리스트
+//    int n; // Number of nodes
+//    LinkedList<Edge3>[] adjacencyList;
+//
+//    public Graph_MST(int n) {
+//
+//    }
+//
+//    public void insertEdge3(int src, int dest, int weight) {
+//
+//    }
+//
+//    public void displayAdjacencyLists() {
+//
+//    }
+//}
 
-    public Sets(int n) {
+//class Sets { // 서로소 집합
+//    int[] parent;
+//
+//    public Sets(int n) {
+//
+//    }
+//
+//    public int find(int i) {
+//
+//    }
+//
+//    public void union(int x, int y) {
+//
+//    }
+//}
 
-    }
-
-    public int find(int i) {
-
-    }
-
-    public void union(int x, int y) {
-
-    }
-}
 public class train_실습과제11_3최소spanningtree_리스트 {
-    static void KruskalMST(Graph_MST graph) {
-        int n = graph.n;
+    static void KruskalMST(int[][] matrix) {
+    	int n = matrix.length;
+    	
         List<Edge3> listEdges = new ArrayList<>();
 
         // 모든 간선을 리스트에 추가
         for (int i = 0; i < n; i++) {
- 
+        	for(int j = i+1; j< n; j++) {
+        		if (matrix[i][j] != 0) {
+        			listEdges.add(new Edge(i, j, matrix[i][j]));
+        		}
+        	}
+        }
+        System.out.println("==간선출력==");
+        for(Edge3 edge : listEdges) {
+        	System.out.println(edge);
         }
 
         // Arrays.sort()를 사용하여 간선을 가중치 기준으로 정렬
-
+        Collections.sort(listEdges);
 
         // Kruskal 알고리즘을 위한 Disjoint Set 초기화
-        Sets ds = new Sets(n);
+        SetsTree ds = new SetsTree(n);
         List<Edge3> mst = new ArrayList<>();
+        int totalWeight = 0;
 
-        for (Edge3 edge : edgeArray) {
-     
+        // 인접리스트로 변경하기
+        for (Edge3 edge : listEdges) {
+        	// 연결되어 있지 않으면
+        	if(!ds.connected(edge.src, edge.dest)) {
+        		ds.simpleUnion(edge.src, edge.dest); // ds.weightUnion(edge.src, edge.dest); 써도 됨
+        		mst.add(edge);
+        		totalWeight += edge.weight;
+        		
+        		// 만약
+        		if (mst.size() == n-1) { 
+        			break;
+        		}
+        	}
         }
 
         // MST 출력
@@ -113,7 +139,7 @@ public class train_실습과제11_3최소spanningtree_리스트 {
     public static void main(String[] args) {
         int[][] matrix = makeGraph();
         showMatrix(matrix);
-        Graph_MST graph = new Graph_MST(N);
+        int[][] graph = new int[N][N];
 
         // 인접 행렬을 사용해 그래프 초기화
         for (int i = 0; i < matrix.length; i++) {

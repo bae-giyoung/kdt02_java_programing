@@ -1,5 +1,16 @@
 package 자료구조제9장트리.test;
-/*
+/* 유니온 파인드 find? 유니온 트리? 루다?
+ * 자료 N의 개수를 줄일 목적일때만 의미가 있다는?
+ * 서로소
+ * 공통 원소가 없는 여러 집합을 상정함
+ * N개의 자료가 있을 때 partition 서로소인 둘로 쪼갠다?
+ * - 순서를 보장하지 않는다.
+ * - 중복을 허용하지 않는다.
+ * 장점: 중복을 배재한다.
+ * 단점: 순서를 보장하지 않는다.
+ */
+
+/* 
  * 집합 트리
  * 집합 원소를 제거하는 delete() 추가, 집합 세트를 출력하는 displaySets()를 추가함
  */
@@ -59,8 +70,8 @@ class Sets3 {
     }
     //void difference() 차집합 -  이 문제는 disjoint set을 가정하므로 가정 변경이 필요
     //void intersection()교집합
-
 }
+
 public class train_실습과제9_3_집합트리 {
     public static void main(String[] args) {
         Sets3 m = new Sets3(20);

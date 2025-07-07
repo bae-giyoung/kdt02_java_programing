@@ -1,38 +1,28 @@
-package 자료구조제9장트리;
-/* Union-Find 유니온 트리? 루다?
- * 자료 N의 개수를 줄일 목적일때만 의미가 있다는?
- * 서로소
- * 공통 원소가 없는 여러 집합을 상정함
- * N개의 자료가 있을 때 partition, 서로가 서로소 집합인 둘로 쪼갠다? -> Disjoint-Set
- * - 순서를 보장하지 않는다.
- * - 중복을 허용하지 않는다.
- * 장점: 중복을 배재한다.
- * 단점: 순서를 보장하지 않는다.
- */
-
+package 자료구조제11장그래프.test;
 
 import java.util.ArrayList;
-/*
- * 집합 트리
- * 집합 원소를 제거하는 delete() 추가, 집합 세트를 출력하는 displaySets()를 추가함
- * 그래프 문제를 풀기 위해 set의 union, find 함수가 필요
- */
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
-class Sets3 {
+public class SetsTree {
+// 서로소 집합
+	// private Map<Integer, Integer> parent;
+	// private Map<Integer, Integer> rank;
     private int[] parent;
     private int n;
 
-    public Sets3(int sz) {
+    public SetsTree(int sz) {
         n = sz;
         parent = new int[sz + 1]; // Don't want to use parent[0] // parent는 배열!
         Arrays.fill(parent, -1);  // Initialize with -1
     }
     
+    //connected - 두 정점이 연결되어 있는지 확인
+    public boolean connected(int i, int j) {
+    	return find(i) == find(j);
+    }
     
     void displaySets() {
     	//{1,2,3} 등으로 set을 표시하기
@@ -144,62 +134,4 @@ class Sets3 {
 //        }
 
     }
-    
-    //void difference() 차집합 -  이 문제는 disjoint set을 가정하므로 가정 변경이 필요
-    //void intersection()교집합
-
 }
-public class train_실습과제9_3_집합트리 {
-    public static void main(String[] args) {
-    	// TreeSet 사용방법 -> 되는 건가?
-    	TreeSet<Integer> set = new TreeSet<Integer>();
-    	set.add(1);
-    	
-    	
-    	// 그냥 푸는 방법
-        Sets3 m = new Sets3(20);
-        m.simpleUnion(7, 1);
-        m.simpleUnion(2, 3);
-        m.simpleUnion(4, 5);
-        m.simpleUnion(6, 7);
-        m.simpleUnion(4, 2);
-        m.simpleUnion(5, 7); // 어디 갔음?? 겹치는게 처음 나옴
-        m.simpleUnion(8, 10);
-        m.simpleUnion(13, 11);
-        m.simpleUnion(12, 9);
-        m.simpleUnion(14, 20);
-        m.simpleUnion(16, 19);
-        m.simpleUnion(17, 18);
-        m.simpleUnion(12, 19);
-        m.simpleUnion(13, 15);
-        System.out.println("SimpleUnion() 실행 결과::");
-        m.display();
-        m.displaySets();
-        
-        m.weightedUnion(1, 8);
-        m.weightedUnion(1, 4);
-        m.weightedUnion(3, 9);
-        m.weightedUnion(7, 15);
-        m.weightedUnion(12, 18);
-        m.weightedUnion(4, 16);
-        System.out.println("WeightedUnion() 실행 결과::");
-        m.display();
-        m.displaySets();
-        if (m.simpleFind(2) == m.simpleFind(18))
-        	System.out.println("2, 18은 같은 집합이다");
-        else
-        	System.out.println("2, 18은 다른 집합이다");
-
-        System.out.println("***3를 집합에서 삭제한다***");
-        m.delete(3);//root를 삭제할 때 문제 있다
-        m.display();
-        m.displaySets();
-        
-        if (m.simpleFind(2) == m.simpleFind(18))
-        	System.out.println("2, 18은 같은 집합이다");
-        else
-        	System.out.println("2, 18은 다른 집합이다");
-        
-    }
-}
-
