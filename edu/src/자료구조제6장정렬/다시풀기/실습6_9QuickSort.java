@@ -21,19 +21,19 @@ class 실습6_9QuickSort {
     	 System.out.printf("%d, ", a[i]);
      System.out.printf("%d}\n", a[right]);
 
+     // 무한 재귀로 터진 코드! 재귀를 사용할때 주의할 점!
      do {
     	 // partition과 다르게..... pivot과 같은 값이 왼쪽 그룹과 오른쪽 그룹에 모두 들어있어도 정렬에는 아무 문제 없는 것 같다! 
-    	 while(a[pl] < x) pl++; // pl < a.length -> 방어 조건 필요 없음!
-    	 while(a[pr] > x) pr--; // pr >= 0 -> 방어 조건 필요 없음!
+    	 while(pl < a.length && a[pl] <= x) pl++;
+    	 while(pr >= 0 && a[pr] > x) pr--; // pr >= 0 -> 방어 조건 필요 없음!
     	 
-    	 if(pl <= pr) swap(a, pl++, pr--);
-    	 
+    	 if(pl <= pr) swap(a, pl++, pr--); // pr < 0 이하이거나 pl >= a.length인 경우는 여기 안들어옴!
      } while(pl <= pr);
      
-    // System.out.println("pl = " + pl + ", pr = " + pr);
-     if (left < pr)  quickSort(a, left, pr);
+    // System.out.println("pl = " + pl + ", pr = " + pr); 
+     if (left < pr) quickSort(a, left, pr); // a[left] ~ a[right]가 전부 같은 요소이거나 pivot보다 전부 작은 값일 때 => left, pr이 모두 변하지 않았기 때문에 재귀함수가 콜스택에 계속 쌓여서 터짐! -> 결국 교재 코드대로 하거나, 3-way-partitioning으로 해야 할 듯! 
      if (pl < right) quickSort(a, pl, right);
-     // left == pr, left == right이면, 즉 요소가 1개이면 종료
+     // left == pr, left == right이면, 즉 최종적으로 요소가 1개이면 재귀가 끝남
 
  }
  static void showData(int[] d) {
@@ -49,7 +49,8 @@ class 실습6_9QuickSort {
      //int[] x = new int[nx];
      int nx = 9;
 //     int []x = {1,8,7,4,5,2,6,3,9};
-     int []x = {5,8,5,4,5,5,6,3,5};
+//     int []x = {5,8,5,4,5,5,6,3,5};
+     int []x = {2,2,2,2,5,5,6,3,5};
 
       Random rand = new Random(42);
 

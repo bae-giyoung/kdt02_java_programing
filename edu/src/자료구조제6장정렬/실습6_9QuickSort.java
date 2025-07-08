@@ -28,7 +28,7 @@ class 실습6_9QuickSort {
              swap(a, pl++, pr--);
          count++;
      } while (pl <= pr);
-    // System.out.println("pl = " + pl + ", pr = " + pr);
+     System.out.println("pl = " + pl + ", pr = " + pr);
      if (left < pr)  quickSort(a, left, pr);
      if (pl < right) quickSort(a, pl, right);
 
